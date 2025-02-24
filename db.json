@@ -1,17 +1,21 @@
 {
-    "babees": [
+    "babee": [
         {
             "id": 1,
-            "name": "Babee 1",
+            "prenom": "Babee 1",
+            "nom": "Family 1",
+            "dateNaissance": "2020-01-01",
             "age": 1
         },
         {
             "id": 2,
-            "name": "Babee 2",
+            "prenom": "Babee 2",
+            "nom": "Family 2",
+            "dateNaissance": "2020-01-01",
             "age": 2
         }
     ],
-    "activities": [
+    "activity": [
         {
             "id": 1,
             "name": "Activity 1",
@@ -35,10 +39,9 @@
             "name": "Dessin"
         }
     ],
-    "healthActs": [
+    "healthAct": [
         {
             "id": 1,
-            "name": "Health 1",
             "babeeId": 1,
             "healthActsType": "1",
             "temperature": 36.5,
@@ -57,7 +60,7 @@
             "quantity": "100"
         }
     ],
-    "healthActsTypes": [
+    "healthActTypes": [
         {
             "id": 1,
             "name": "Temperature"
@@ -67,7 +70,7 @@
             "name": "Medicaments"
         }
     ],
-    "sleepings": [
+    "sleeping": [
         {
             "id": 1,
             "name": "Sleep 1",
@@ -85,37 +88,33 @@
             "duration": 45
         }
     ],
-    "careActs": [
+    "careAct": [
         {
             "id": 1,
-            "name": "Care 1",
+            "babeeId": 1,
+            "careActType": 1,
+            "careActDetail": 1,
+            "commentaire": null
+        },
+        {
+            "id": 2,
+            "babeeId": 2,
+            "careActType": 1,
+            "careActDetail": 1,
+            "commentaire": null
+        }
+    ],
+    "feeding": [
+        {
+            "id": 1,
             "babeeId": 1
         },
         {
             "id": 2,
-            "name": "Care 2",
             "babeeId": 2
         }
     ],
-    "feedings": [
-        {
-            "id": 1,
-            "name": "Feeding 1",
-            "babeeId": 1,
-            "begin": "2020-01-01T00:00:00",
-            "end": "2020-01-01T00:00:00",
-            "duration": 0
-        },
-        {
-            "id": 2,
-            "name": "Feeding 2",
-            "babeeId": 2,
-            "begin": "2020-01-01T00:00:00",
-            "end": "2020-01-01T00:00:00",
-            "duration": 0
-        }
-    ],
-    "Infos": [
+    "information": [
         {
             "id": 1,
             "commentaire": "Info 1",
