@@ -1,1 +1,44 @@
-<p>babee-profile works!</p>
+<section class="container mb-4">
+  <div class="p-3 bg-light rounded">
+    <!-- row pour organiser la photo et les infos côte à côte -->
+    <div class="row">
+      <div class="col-md-2">
+        <img
+          [src]="enfant().photo || 'images/avatar-bebe.png'"
+          alt="Photo Enfant"
+          class="img-fluid rounded"
+        />
+      </div>
+      <div class="col-md-9 d-flex flex-column">
+        <p class="m-2">Nom: {{ enfant().nom }}</p>
+        <p class="m-2">Prénom: {{ enfant().prenom }}</p>
+        <p class="m-2">Age: {{ enfant().age }} ans</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="container">
+  <div class="row mb-3">
+    <div class="col-md-4">
+      <app-activities></app-activities>
+    </div>
+    <div class="col-md-4">
+      <app-feeding></app-feeding>
+    </div>
+    <div class="col-md-4">
+      <app-heath-acts></app-heath-acts>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-4">
+      <app-care-acts></app-care-acts>
+    </div>
+    <div class="col-md-4">
+      <app-sleeping></app-sleeping>
+    </div>
+    <div class="col-md-4">
+      <app-infos></app-infos>
+    </div>
+  </div>
+</section>

@@ -1,1 +1,81 @@
-<p>care-acts works!</p>
+<div class="border rounded p-3 mb-3">
+  <!-- Titre de la rubrique -->
+  <h3 class="mb-3 text-center">Soins</h3>
+
+  <!-- Sélecteur de date -->
+  <div class="d-flex align-items-center mb-2">
+    <div class="flex-grow-1 mx-2">
+      <label for="dateSelector" class="form-label visually-hidden"
+        >Date :</label
+      >
+      <input
+        type="date"
+        id="dateSelector"
+        class="form-control text-center"
+        value="{{ todayDate }}"
+      />
+    </div>
+  </div>
+
+  <!-- Liste des informations -->
+  <ul class="list-group">
+    @for(careAct of careActList(); track careAct.id) { }
+    <li class="list-group-item">Information 1</li>
+    <li class="list-group-item">Information 2</li>
+    <li class="list-group-item">Information 3</li>
+  </ul>
+
+  <div class="container mt-4 border rounded">
+    <h5 class="mt-2 text-center">Ajouter un nouvel acte de soin</h5>
+    <form (ngSubmit)="onSubmit()">
+      <fieldset class="mb-4">
+        <div class="d-flex gap-3">
+          <label *ngFor="let option of options1">
+            <input type="radio" name="option1" [value]="option" /> {{ option }}
+          </label>
+        </div>
+      </fieldset>
+
+      <fieldset class="mb-4">
+        <div class="d-flex gap-3">
+          <label *ngFor="let option of options2">
+            <input type="radio" name="option2" [value]="option" /> {{ option }}
+          </label>
+        </div>
+      </fieldset>
+
+      <div class="mb-2">
+        <label for="commentaire">Commentaire :</label><br />
+        <textarea
+          id="commentaire"
+          name="commentaire"
+          class="form-control"
+          rows="4"
+          placeholder="Votre commentaire..."
+        ></textarea>
+      </div>
+
+      <div class="mb-4">
+        <legend>Choisissez une heure :</legend>
+        <div class="d-flex gap-2">
+          <select class="form-select w-auto" name="hour">
+            <option *ngFor="let hour of hours" [value]="hour">
+              {{ hour }}
+            </option>
+          </select>
+          <span>h</span>
+          <select class="form-select w-auto" name="minute">
+            <option *ngFor="let minute of minutes" [value]="minute">
+              {{ minute }}
+            </option>
+          </select>
+          <span>min</span>
+        </div>
+      </div>
+
+      <div class="d-flex justify-content-end">
+        <button type="submit " class="btn btn-primary mb-1">Envoyer</button>
+      </div>
+    </form>
+  </div>
+</div>

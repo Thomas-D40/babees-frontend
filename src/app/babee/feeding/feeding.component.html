@@ -1,1 +1,26 @@
-<p>feeding works!</p>
+<div class="border rounded p-3 mb-3">
+  <!-- Titre de la rubrique -->
+  <h3 class="mb-3 text-center">Repas</h3>
+
+  <!-- Sélecteur de date -->
+  <div class="d-flex align-items-center mb-2">
+    <div class="flex-grow-1 mx-2">
+      <label for="dateSelector" class="form-label visually-hidden"
+        >Date :</label
+      >
+      <input
+        type="date"
+        id="dateSelector"
+        class="form-control text-center"
+        value="{{ todayDate }}"
+      />
+    </div>
+  </div>
+
+  <!-- Liste des informations -->
+  <ul class="list-group">
+    <li class="list-group-item">Information 1</li>
+    <li class="list-group-item">Information 2</li>
+    <li class="list-group-item">Information 3</li>
+  </ul>
+</div>
