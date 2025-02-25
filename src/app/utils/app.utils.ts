@@ -26,3 +26,12 @@ export function getStartAndEndOfDay(date: Date): {
     endOfDay: endOfDay.toISOString(),
   };
 }
+
+export function stringToDateUTC(dateString: string) {
+  if (!dateString) {
+    return new Date();
+  }
+  const [year, month, day] = dateString.split('-').map(Number);
+
+  return new Date(Date.UTC(year, month - 1, day));
+}

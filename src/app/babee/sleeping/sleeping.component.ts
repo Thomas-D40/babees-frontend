@@ -1,10 +1,10 @@
-import { Component, signal } from '@angular/core';
+import { Component, Input, signal } from '@angular/core';
 import { TimeDiffPipe } from '../../pipes/time-diff.pipe';
 import { TimeToHourPipe } from '../../pipes/time-to-hour.pipe';
 import {
   MINUTES_FOR_SELECTOR,
   OPEN_HOUR_FOR_SELECTOR,
-} from '../constants/app.constants';
+} from '../../constants/app.constants';
 import { NgFor } from '@angular/common';
 
 @Component({
@@ -14,6 +14,9 @@ import { NgFor } from '@angular/common';
   styleUrl: './sleeping.component.css',
 })
 export class SleepingComponent {
+  @Input() date!: string;
+  @Input() babeeId!: number;
+
   readonly todayDate = new Date().toISOString().split('T')[0];
 
   readonly hours = OPEN_HOUR_FOR_SELECTOR;

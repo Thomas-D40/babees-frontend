@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 
 @Component({
   selector: 'app-feeding',
@@ -7,5 +7,7 @@ import { Component } from '@angular/core';
   styleUrl: './feeding.component.css',
 })
 export class FeedingComponent {
+  @Input() date!: string;
+  @Input() babeeId!: number;
   onSubmit() {}
 }

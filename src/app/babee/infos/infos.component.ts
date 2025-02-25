@@ -1,4 +1,4 @@
-import { Component, signal } from '@angular/core';
+import { Component, Input, signal } from '@angular/core';
 
 @Component({
   selector: 'app-infos',
@@ -7,7 +7,8 @@ import { Component, signal } from '@angular/core';
   styleUrl: './infos.component.css',
 })
 export class InfosComponent {
-  readonly todayDate = new Date().toISOString().split('T')[0];
+  @Input() date!: string;
+  @Input() babeeId!: number;
 
   readonly informationList = signal([
     {

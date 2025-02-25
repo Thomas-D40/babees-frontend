@@ -1,5 +1,5 @@
 import { NgFor } from '@angular/common';
-import { Component, signal } from '@angular/core';
+import { Component, Input, signal } from '@angular/core';
 import { TimeToHourPipe } from '../../pipes/time-to-hour.pipe';
 
 @Component({
@@ -9,6 +9,9 @@ import { TimeToHourPipe } from '../../pipes/time-to-hour.pipe';
   styleUrl: './health-acts.component.css',
 })
 export class HealthActsComponent {
+  @Input() date!: string;
+  @Input() babeeId!: number;
+
   readonly healthActTypeList = ['Température', 'Médicaments'];
   readonly healthActTypeSelected = signal<string>('Température');
 

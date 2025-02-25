@@ -1,6 +1,8 @@
-import { Component, signal } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { of } from 'rxjs';
+import { BabeeService } from '../../services/babee.service';
+import { toSignal } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'app-babee-list',
@@ -9,31 +11,9 @@ import { of } from 'rxjs';
   styleUrl: './babee-list.component.css',
 })
 export class BabeeListComponent {
-  readonly enfantList = signal([
-    {
-      id: 1,
-      prenom: 'toto',
-      photo: null,
-    },
-    {
-      id: 2,
-      prenom: 'toto',
-      photo: null,
-    },
-    {
-      id: 3,
-      prenom: 'toto',
-      photo: null,
-    },
-    {
-      id: 4,
-      prenom: 'toto',
-      photo: null,
-    },
-    {
-      id: 5,
-      prenom: 'toto',
-      photo: null,
-    },
-  ]);
+  readonly #babeeService = inject(BabeeService);
+
+  readonly babeeList = toSignal(this.#babeeService.getBabeeList(), {
+    initialValue: [],
+  });
 }

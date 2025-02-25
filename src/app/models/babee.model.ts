@@ -4,6 +4,7 @@ export interface Babee {
   nom: string;
   dateNaissance: Date;
   age: number;
+  photoUrl: string;
 }
 
 export type BabeeList = Babee[];

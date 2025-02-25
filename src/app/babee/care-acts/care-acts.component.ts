@@ -1,9 +1,5 @@
 import { NgFor } from '@angular/common';
-import { Component, signal } from '@angular/core';
-import {
-  MINUTES_FOR_SELECTOR,
-  OPEN_HOUR_FOR_SELECTOR,
-} from '../constants/app.constants';
+import { Component, Input, signal } from '@angular/core';
 import {
   CARE_ACT_DETAIL_LIST,
   CARE_ACT_TYPE_LIST,
@@ -16,7 +12,8 @@ import {
   styleUrl: './care-acts.component.css',
 })
 export class CareActsComponent {
-  readonly todayDate = new Date().toISOString().split('T')[0];
+  @Input() date!: string;
+  @Input() babeeId!: number;
 
   readonly careActOptionList = CARE_ACT_TYPE_LIST;
   readonly careDetailOptionList = CARE_ACT_DETAIL_LIST;
