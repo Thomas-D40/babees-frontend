@@ -2,29 +2,69 @@
   <!-- Titre de la rubrique -->
   <h3 class="mb-3 text-center">Sommeil</h3>
 
-  <!-- Sélecteur de date -->
-  <div class="d-flex align-items-center mb-2">
-    <div class="flex-grow-1 mx-2">
-      <label for="dateSelector" class="form-label visually-hidden"
-        >Date :</label
-      >
-      <input
-        type="date"
-        id="dateSelector"
-        class="form-control text-center"
-        value="{{ todayDate }}"
-      />
+  <table class="table table-striped">
+    <thead>
+      <tr class="text-center">
+        <th scope="col">Début</th>
+        <th scope="col">Fin</th>
+        <th scope="col">Total</th>
+      </tr>
+    </thead>
+    <tbody>
+      @for(sleep of sleepList(); track sleep.id) {
+      <tr class="text-center">
+        <td>{{ sleep.begin | timeToHourFormat }}</td>
+        <td>{{ sleep.end | timeToHourFormat }}</td>
+        <td>{{ sleep.begin | timeDiff : sleep.end }}</td>
+      </tr>
+      }
+    </tbody>
+  </table>
+
+  <div class="container mt-4 border rounded">
+    <h5 class="mt-2 mb-3 text-center">Ajouter des horaires de sommeil</h5>
+    <div class="row g-3 mb-3 align-items-end d-flex">
+      <!-- Sélecteur de l'heure de début -->
+      <div class="col-auto">
+        <label class="form-label">Début</label>
+        <div class="d-flex align-items-center">
+          <select class="custom-select-small" name="endHour">
+            <option *ngFor="let hour of hours" [value]="hour">
+              {{ hour }}
+            </option>
+          </select>
+          <span class="mx-1">h</span>
+          <select class="custom-select-small" name="endHour">
+            <option *ngFor="let minute of minutes" [value]="minute">
+              {{ minute }}
+            </option>
+          </select>
+          <span class="mx-1">min</span>
+        </div>
+      </div>
+
+      <!-- Sélecteur de l'heure de fin -->
+      <div class="col-auto">
+        <label class="form-label">Fin</label>
+        <div class="d-flex align-items-center">
+          <select class="custom-select-small" name="endHour">
+            <option *ngFor="let hour of hours" [value]="hour">
+              {{ hour }}
+            </option>
+          </select>
+          <span class="mx-1">h</span>
+          <select class="custom-select-small" name="endHour">
+            <option *ngFor="let minute of minutes" [value]="minute">
+              {{ minute }}
+            </option>
+          </select>
+          <span class="mx-1">min</span>
+        </div>
+      </div>
+
+      <div class="col-auto justify-content-end">
+        <button type="submit " class="btn btn-primary mb-2">Ajouter</button>
+      </div>
     </div>
   </div>
-
-  <!-- Liste des informations -->
-  <ul class="list-group">
-    @for(sleep of sleepList(); track sleep.id) {
-    <li class="list-group-item">
-      De {{ sleep.begin | timeToHourFormat }} à
-      {{ sleep.end | timeToHourFormat }}. Total:
-      {{ sleep.begin | timeDiff : sleep.end }}.
-    </li>
-    }
-  </ul>
 </div>

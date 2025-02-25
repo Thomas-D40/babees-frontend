@@ -1,15 +1,23 @@
 import { Component, signal } from '@angular/core';
 import { TimeDiffPipe } from '../../pipes/time-diff.pipe';
 import { TimeToHourPipe } from '../../pipes/time-to-hour.pipe';
+import {
+  MINUTES_FOR_SELECTOR,
+  OPEN_HOUR_FOR_SELECTOR,
+} from '../constants/app.constants';
+import { NgFor } from '@angular/common';
 
 @Component({
   selector: 'app-sleeping',
-  imports: [TimeDiffPipe, TimeToHourPipe],
+  imports: [TimeDiffPipe, TimeToHourPipe, NgFor],
   templateUrl: './sleeping.component.html',
   styleUrl: './sleeping.component.css',
 })
 export class SleepingComponent {
   readonly todayDate = new Date().toISOString().split('T')[0];
+
+  readonly hours = OPEN_HOUR_FOR_SELECTOR;
+  readonly minutes = MINUTES_FOR_SELECTOR;
 
   readonly sleepList = signal([
     {

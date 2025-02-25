@@ -1,0 +1,67 @@
+<div class="border rounded p-3 mb-3">
+  <!-- Titre de la rubrique -->
+  <h3 class="mb-3 text-center">Santé</h3>
+
+  <!-- Liste des informations -->
+  <ul class="list-group">
+    @for(healthAct of healthActList(); track healthAct.id) {
+    @if(healthAct.healthActType === 1) {
+    <li class="list-group-item">
+      <span style="font-weight: bold">Température:</span>
+      {{ healthAct.temperature }}°C à
+      {{ healthAct.hour | timeToHourFormat }}
+    </li>
+    } @if(healthAct.healthActType === 2) {
+    <li class="list-group-item">
+      <span style="font-weight: bold">Médicaments:</span>
+      {{ healthAct.quantity }}g de
+      {{ healthAct.medicaments }}
+      à
+      {{ healthAct.hour | timeToHourFormat }}
+    </li>
+    } }
+  </ul>
+
+  <div class="container mt-4 border rounded">
+    <h5 class="mt-2 mb-3 text-center">Ajouter un acte de santé</h5>
+    <form (ngSubmit)="onSubmit()">
+      <select
+        class="form-select w-auto"
+        name="healthActType"
+        (change)="onChangeHealthActType($event)"
+      >
+        <option
+          *ngFor="let healthActType of healthActTypeList"
+          [value]="healthActType"
+        >
+          {{ healthActType }}
+        </option>
+      </select>
+
+      @if(healthActTypeSelected() === 'Température') {
+      <div class="input-group mt-2 mb-3" style="max-width: 200px">
+        <span class="input-group-text">
+          <i class="bi bi-thermometer-half"></i>
+        </span>
+        <input type="number" class="form-control" id="temperature" />
+        <span class="input-group-text">°C</span>
+      </div>
+      } @if(healthActTypeSelected() === 'Médicaments') {
+
+      <input
+        type="text"
+        class="form-control mt-2"
+        id="temperature"
+        placeholder="Médicaments"
+      />
+      <div class="input-group mt-2 mb-3" style="max-width: 200px">
+        <input type="number" class="form-control" id="quantity" />
+        <span class="input-group-text">g</span>
+      </div>
+      }
+      <div class="d-flex justify-content-end">
+        <button type="submit " class="btn btn-primary mb-2">Ajouter</button>
+      </div>
+    </form>
+  </div>
+</div>

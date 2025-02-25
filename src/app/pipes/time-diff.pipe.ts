@@ -13,9 +13,9 @@ export class TimeDiffPipe implements PipeTransform {
     const remainingMinutes = totalMinutes % 60;
 
     if (hour) {
-      return hour + 'h' + remainingMinutes + 'm';
+      return hour + 'h' + String(remainingMinutes).padStart(2, '0');
     } else {
-      return remainingMinutes + 'm';
+      return String(remainingMinutes).padStart(2, '0') + 'm';
     }
   }
 }

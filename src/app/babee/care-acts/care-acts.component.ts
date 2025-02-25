@@ -1,5 +1,9 @@
 import { NgFor } from '@angular/common';
 import { Component, signal } from '@angular/core';
+import {
+  MINUTES_FOR_SELECTOR,
+  OPEN_HOUR_FOR_SELECTOR,
+} from '../constants/app.constants';
 
 @Component({
   selector: 'app-care-acts',
@@ -9,6 +13,36 @@ import { Component, signal } from '@angular/core';
 })
 export class CareActsComponent {
   readonly todayDate = new Date().toISOString().split('T')[0];
+
+  readonly careActOptionList = ['Pipi', 'Caca', 'Nez', 'Oeil'];
+  readonly careDetailOptionList = ['Pot', 'Couche', 'Toilettes'];
+
+  selectedCareAct: string | null = null;
+  selectedCareDetail: string | null = null;
+
+  onCareActCheckboxChange(option: string, event: Event): void {
+    const input = event.target as HTMLInputElement;
+
+    if (input.checked) {
+      this.selectedCareAct = option;
+    } else {
+      if (this.selectedCareAct === option) {
+        this.selectedCareAct = null;
+      }
+    }
+  }
+
+  onCareDetailCheckboxChange(option: string, event: Event): void {
+    const input = event.target as HTMLInputElement;
+
+    if (input.checked) {
+      this.selectedCareDetail = option;
+    } else {
+      if (this.selectedCareDetail === option) {
+        this.selectedCareDetail = null;
+      }
+    }
+  }
 
   readonly careActList = signal([
     {
@@ -41,9 +75,4 @@ export class CareActsComponent {
   ]);
 
   onSubmit() {}
-
-  readonly options1 = ['Pipi', 'Caca', 'Nez', 'Oeil'];
-  readonly options2 = ['Pot', 'Couche', 'Toilettes'];
-  hours: number[] = Array.from({ length: 11 }, (_, i) => i + 8);
-  minutes: number[] = Array.from({ length: 12 }, (_, i) => i * 5);
 }

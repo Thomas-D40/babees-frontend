@@ -7,5 +7,5 @@ import { Component } from '@angular/core';
   styleUrl: './feeding.component.css',
 })
 export class FeedingComponent {
-  readonly todayDate = new Date().toISOString().split('T')[0];
+  onSubmit() {}
 }

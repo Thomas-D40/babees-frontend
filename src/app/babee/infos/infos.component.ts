@@ -15,4 +15,6 @@ export class InfosComponent {
       comments: 'Chalut',
     },
   ]);
+
+  onSubmit() {}
 }

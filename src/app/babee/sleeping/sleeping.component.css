@@ -1,0 +1,24 @@
+/* Classe pour ajuster la taille et retirer les flèches des <select> */
+.custom-select-small {
+  /* Taille adaptée au texte */
+  font-size: 1rem;
+  padding: 0.2rem 0.4rem;
+  /* Réduire la hauteur si besoin */
+  height: auto;
+
+  /* Pour Chrome, Safari, Opera */
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+
+  /* Optionnel : ajouter une bordure et un arrière-plan personnalisé */
+  border: 1px solid #ced4da;
+  border-radius: 0.25rem;
+  background-color: #fff;
+  background-image: none; /* Désactive l'icône par défaut */
+}
+
+/* Si tu souhaites également enlever l'indicateur de flèche sur IE/Edge */
+.custom-select-small::-ms-expand {
+  display: none;
+}
