@@ -1,129 +1,139 @@
 {
-    "babee": [
-        {
-            "id": 1,
-            "prenom": "Babee 1",
-            "nom": "Family 1",
-            "dateNaissance": "2020-01-01",
-            "age": 1
-        },
-        {
-            "id": 2,
-            "prenom": "Babee 2",
-            "nom": "Family 2",
-            "dateNaissance": "2020-01-01",
-            "age": 2
-        }
-    ],
-    "activity": [
-        {
-            "id": 1,
-            "name": "Activity 1",
-            "babeeId": 1,
-            "activityType": "1"
-        },
-        {
-            "id": 2,
-            "name": "Activity 2",
-            "babeeId": 2,            
-            "activityType": "2"
-        }
-    ],
-    "activityTypes": [
-        {
-            "id": 1,
-            "name": "Coloriage"
-        },
-        {
-            "id": 2,
-            "name": "Dessin"
-        }
-    ],
-    "healthAct": [
-        {
-            "id": 1,
-            "babeeId": 1,
-            "healthActsType": "1",
-            "temperature": 36.5,
-            "hour": "2020-01-01T12:00:00",
-            "medicaments": null,
-            "quantity": null
-        },
-        {
-            "id": 2,
-            "name": "Health 2",
-            "babeeId": 2,
-            "healthActsType": "2",
-            "temperature": null,
-            "hour": "2020-01-01T12:00:00",
-            "medicaments": "Doliprane",
-            "quantity": "100"
-        }
-    ],
-    "healthActTypes": [
-        {
-            "id": 1,
-            "name": "Temperature"
-        },
-        {
-            "id": 2,
-            "name": "Medicaments"
-        }
-    ],
-    "sleeping": [
-        {
-            "id": 1,
-            "name": "Sleep 1",
-            "babeeId": 1,
-            "begin": "2020-01-01T12:00:00",
-            "end": "2020-01-01T12:45:00",
-            "duration": 45
-        },
-        {
-            "id": 2,
-            "name": "Sleep 2",
-            "babeeId": 2,
-            "begin": "2020-01-01T12:00:00",
-            "end": "2020-01-01T12:45:00",
-            "duration": 45
-        }
-    ],
-    "careAct": [
-        {
-            "id": 1,
-            "babeeId": 1,
-            "careActType": 1,
-            "careActDetail": 1,
-            "commentaire": null
-        },
-        {
-            "id": 2,
-            "babeeId": 2,
-            "careActType": 1,
-            "careActDetail": 1,
-            "commentaire": null
-        }
-    ],
-    "feeding": [
-        {
-            "id": 1,
-            "babeeId": 1
-        },
-        {
-            "id": 2,
-            "babeeId": 2
-        }
-    ],
-    "information": [
-        {
-            "id": 1,
-            "commentaire": "Info 1",
-            "babeeId": 1
-        },
-        {
-            "id": 2,
-            "commentaire": "Info 2",
-            "babeeId": 2
-        }
-    ]
+  "babee": [
+    {
+      "id": 1,
+      "prenom": "Babee 1",
+      "nom": "Family 1",
+      "dateNaissance": "2020-01-01",
+      "age": 1
+    },
+    {
+      "id": 2,
+      "prenom": "Babee 2",
+      "nom": "Family 2",
+      "dateNaissance": "2020-01-01",
+      "age": 2
+    }
+  ],
+  "activity": [
+    {
+      "id": 1,
+      "name": "Activity 1",
+      "babeeId": 1,
+      "activityType": "1",
+      "date": "2025-02-05T12:00:00"
+    },
+    {
+      "id": 2,
+      "name": "Activity 2",
+      "babeeId": 2,
+      "activityType": "2",
+      "date": "2025-02-05T12:00:00"
+    }
+  ],
+  "activityTypes": [
+    {
+      "id": 1,
+      "name": "Coloriage"
+    },
+    {
+      "id": 2,
+      "name": "Dessin"
+    }
+  ],
+  "healthAct": [
+    {
+      "id": 1,
+      "babeeId": 1,
+      "healthActsType": "1",
+      "temperature": 36.5,
+      "date": "2025-02-05T12:00:00",
+      "medicaments": null,
+      "quantity": null
+    },
+    {
+      "id": 2,
+      "name": "Health 2",
+      "babeeId": 2,
+      "healthActsType": "2",
+      "temperature": null,
+      "date": "2025-02-05T12:00:00",
+      "medicaments": "Doliprane",
+      "quantity": "100"
+    }
+  ],
+  "healthActTypes": [
+    {
+      "id": 1,
+      "name": "Temperature"
+    },
+    {
+      "id": 2,
+      "name": "Medicaments"
+    }
+  ],
+  "sleeping": [
+    {
+      "id": 1,
+      "name": "Sleep 1",
+      "babeeId": 1,
+      "date": "2025-02-05T12:00:00",
+      "begin": "2020-01-01T12:00:00",
+      "end": "2020-01-01T12:45:00",
+      "duration": 45
+    },
+    {
+      "id": 2,
+      "name": "Sleep 2",
+      "babeeId": 2,
+      "date": "2025-02-05T12:00:00",
+      "begin": "2020-01-01T12:00:00",
+      "end": "2020-01-01T12:45:00",
+      "duration": 45
+    }
+  ],
+  "careAct": [
+    {
+      "id": 1,
+      "babeeId": 1,
+      "careActType": 1,
+      "careActDetail": 1,
+      "commentaire": null,
+      "date": "2025-02-05T12:00:00"
+    },
+    {
+      "id": 2,
+      "babeeId": 2,
+      "careActType": 1,
+      "careActDetail": 1,
+      "commentaire": null,
+      "date": "2025-02-05T12:00:00"
+    }
+  ],
+  "feeding": [
+    {
+      "id": 1,
+      "babeeId": 1,
+      "date": "2025-02-05T12:00:00"
+    },
+    {
+      "id": 2,
+      "babeeId": 2,
+      "date": "2025-02-05T12:00:00"
+    }
+  ],
+  "information": [
+    {
+      "id": 1,
+      "commentaire": "Info 1",
+      "babeeId": 1,
+      "date": "2025-02-05T12:00:00"
+    },
+    {
+      "id": 2,
+      "commentaire": "Info 2",
+      "babeeId": 1,
+      "date": "2025-02-05T12:00:00"
+    }
+  ]
 }

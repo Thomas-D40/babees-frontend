@@ -4,6 +4,10 @@ import {
   MINUTES_FOR_SELECTOR,
   OPEN_HOUR_FOR_SELECTOR,
 } from '../constants/app.constants';
+import {
+  CARE_ACT_DETAIL_LIST,
+  CARE_ACT_TYPE_LIST,
+} from '../../models/babee.model';
 
 @Component({
   selector: 'app-care-acts',
@@ -14,25 +18,25 @@ import {
 export class CareActsComponent {
   readonly todayDate = new Date().toISOString().split('T')[0];
 
-  readonly careActOptionList = ['Pipi', 'Caca', 'Nez', 'Oeil'];
-  readonly careDetailOptionList = ['Pot', 'Couche', 'Toilettes'];
+  readonly careActOptionList = CARE_ACT_TYPE_LIST;
+  readonly careDetailOptionList = CARE_ACT_DETAIL_LIST;
 
-  selectedCareAct: string | null = null;
-  selectedCareDetail: string | null = null;
+  selectedCareAct: number | null = null;
+  selectedCareDetail: number | null = null;
 
-  onCareActCheckboxChange(option: string, event: Event): void {
+  onCareActCheckboxChange(optionId: number, event: Event): void {
     const input = event.target as HTMLInputElement;
 
     if (input.checked) {
-      this.selectedCareAct = option;
+      this.selectedCareAct = optionId;
     } else {
-      if (this.selectedCareAct === option) {
+      if (this.selectedCareAct === optionId) {
         this.selectedCareAct = null;
       }
     }
   }
 
-  onCareDetailCheckboxChange(option: string, event: Event): void {
+  onCareDetailCheckboxChange(option: number, event: Event): void {
     const input = event.target as HTMLInputElement;
 
     if (input.checked) {

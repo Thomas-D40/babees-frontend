@@ -1,10 +1,11 @@
-import { Component, signal } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { ActivitiesComponent } from '../activities/activities.component';
 import { CareActsComponent } from '../care-acts/care-acts.component';
 import { FeedingComponent } from '../feeding/feeding.component';
 import { HealthActsComponent } from '../health-acts/health-acts.component';
 import { InfosComponent } from '../infos/infos.component';
 import { SleepingComponent } from '../sleeping/sleeping.component';
+import { BabeeService } from '../../services/babee.service';
 
 @Component({
   selector: 'app-babee-profile',
@@ -21,6 +22,8 @@ import { SleepingComponent } from '../sleeping/sleeping.component';
 })
 export class BabeeProfileComponent {
   readonly todayDate = new Date().toISOString().split('T')[0];
+
+  readonly #babeeService = inject(BabeeService);
   readonly enfant = signal({
     id: '1',
     nom: 'toto',

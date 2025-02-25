@@ -1,10 +1,9 @@
-import { DatePipe, NgFor } from '@angular/common';
+import { NgFor } from '@angular/common';
 import { Component, signal } from '@angular/core';
 import { TimeToHourPipe } from '../../pipes/time-to-hour.pipe';
-import { BehaviorSubject } from 'rxjs';
 
 @Component({
-  selector: 'app-heath-acts',
+  selector: 'app-health-acts',
   imports: [TimeToHourPipe, NgFor],
   templateUrl: './health-acts.component.html',
   styleUrl: './health-acts.component.css',
@@ -16,9 +15,7 @@ export class HealthActsComponent {
   onChangeHealthActType(event: Event): void {
     const selectElement = event.target as HTMLSelectElement;
     const selectedValue = selectElement.value;
-    // Met à jour le signal avec la nouvelle valeur
     this.healthActTypeSelected.set(selectedValue);
-    console.log('Nouvelle sélection :', selectedValue);
   }
 
   readonly healthActList = signal([

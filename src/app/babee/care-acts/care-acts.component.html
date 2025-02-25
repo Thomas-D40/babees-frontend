@@ -19,29 +19,31 @@
             <input
               type="checkbox"
               class="form-check-input me-2"
-              [checked]="selectedCareAct === option"
-              (change)="onCareActCheckboxChange(option, $event)"
+              [checked]="selectedCareAct === option.id"
+              (change)="onCareActCheckboxChange(option.id, $event)"
               id="option-{{ i }}"
             />
-            <label for="option-{{ i }}">{{ option }}</label>
+            <label for="option-{{ i }}">{{ option.label }}</label>
           </div>
         </div>
       </fieldset>
 
+      @if(selectedCareAct === 1 || selectedCareAct === 2) {
       <fieldset class="mb-4">
         <div class="d-flex gap-3">
           <label *ngFor="let option of careDetailOptionList; let i = index">
             <input
               type="checkbox"
               class="form-check-input me-2"
-              [checked]="selectedCareDetail === option"
-              (change)="onCareDetailCheckboxChange(option, $event)"
+              [checked]="selectedCareDetail === option.id"
+              (change)="onCareDetailCheckboxChange(option.id, $event)"
               id="option-{{ i }}"
             />
-            <label for="option-{{ i }}">{{ option }}</label>
+            <label for="option-{{ i }}">{{ option.label }}</label>
           </label>
         </div>
       </fieldset>
+      }
 
       <div class="mb-2">
         <label for="commentaire">Commentaire :</label><br />
