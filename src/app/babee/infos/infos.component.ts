@@ -1,8 +1,17 @@
-import { Component, Input, signal } from '@angular/core';
+import { Component, inject, Input, signal, SimpleChanges } from '@angular/core';
+import {
+  FormControl,
+  FormGroup,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
+import { InformationList } from '../../models/babee.model';
+import { InformationService } from '../../services/information.service';
+import { stringToDateUTC } from '../../utils/app.utils';
 
 @Component({
   selector: 'app-infos',
-  imports: [],
+  imports: [ReactiveFormsModule],
   templateUrl: './infos.component.html',
   styleUrl: './infos.component.css',
 })
@@ -10,12 +19,68 @@ export class InfosComponent {
   @Input() date!: string;
   @Input() babeeId!: number;
 
-  readonly informationList = signal([
-    {
-      id: 1,
-      comments: 'Chalut',
-    },
-  ]);
+  private readonly informationsService = inject(InformationService);
 
-  onSubmit() {}
+  private readonly informationsSignal = signal<InformationList>([]);
+
+  readonly isLoading = signal(true);
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['date'] || changes['babeeId']) {
+      this.fetchInformations();
+    }
+  }
+
+  private fetchInformations() {
+    this.isLoading.set(true);
+
+    this.informationsService
+      .getInformationByBabeeIdAndDate(this.babeeId, stringToDateUTC(this.date))
+      .subscribe({
+        next: (informations) => {
+          this.informationsSignal.set(informations);
+          this.isLoading.set(false);
+        },
+        error: (err) => {
+          console.error('Erreur lors de la récupération des activités', err);
+        },
+      });
+  }
+
+  informations(): InformationList {
+    return this.informationsSignal();
+  }
+
+  readonly form = new FormGroup({
+    commentaire: new FormControl('', [Validators.required]),
+  });
+
+  get commentaire(): FormControl {
+    return this.form.get('commentaire') as FormControl;
+  }
+
+  onSubmit() {
+    const babeeId = this.babeeId;
+    const isFormValid = this.form.valid;
+    const date = new Date();
+
+    if (isFormValid && babeeId) {
+      const information = {
+        commentaire: this.commentaire.value,
+        date: date,
+        babeeId: babeeId,
+      };
+
+      this.informationsService.createInformation(information).subscribe(() => {
+        this.form.patchValue({ commentaire: '' });
+        this.fetchInformations();
+      });
+    }
+  }
+
+  deleteInformation(id: number) {
+    this.informationsService
+      .deleteInformation(id)
+      .subscribe(() => this.fetchInformations());
+  }
 }

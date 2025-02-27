@@ -23,11 +23,11 @@ export interface Activity extends BaseItem {
 export type ActivityList = Activity[];
 
 export interface HealthAct extends BaseItem {
-  hour: string;
+  heure: string;
   healthActType: number;
   temperature?: number;
-  medicaments?: number;
-  quantity?: number;
+  nomMedicament?: number;
+  dosage?: number;
 }
 
 export type HealthActList = HealthAct[];
@@ -35,7 +35,7 @@ export type HealthActList = HealthAct[];
 export interface Sleeping extends BaseItem {
   begin: string;
   end: string;
-  duration: number;
+  duration?: number;
 }
 
 export type SleepingList = Sleeping[];
@@ -80,7 +80,7 @@ export const CARE_ACT_DETAIL_LIST = [
   { id: 3, label: 'Toilettes' },
 ];
 
-export enum HealthActType {
-  TEMPERATURE = 1,
-  MEDICAMENTS = 2,
-}
+export const HEALTH_ACT_TYPE_LIST = [
+  { id: 1, label: 'Température' },
+  { id: 2, label: 'Médicaments' },
+];

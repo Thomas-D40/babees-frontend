@@ -1,7 +1,7 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { SleepingList } from '../models/babee.model';
+import { Sleeping, SleepingList } from '../models/babee.model';
 import { getStartAndEndOfDay } from '../utils/app.utils';
 
 @Injectable({
@@ -30,5 +30,13 @@ export class SleepingService {
       .set('date_lte', endOfDay);
 
     return this.httpClient.get<SleepingList>(this.#BASE_URL, { params });
+  }
+
+  createSleeping(sleep: Sleeping): Observable<Sleeping> {
+    return this.httpClient.post<Sleeping>(this.#BASE_URL, sleep);
+  }
+
+  deleteSleeping(id: number): Observable<void> {
+    return this.httpClient.delete<void>(this.#BASE_URL + '/' + id);
   }
 }

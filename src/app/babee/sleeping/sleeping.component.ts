@@ -1,14 +1,25 @@
-import { Component, Input, signal } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { Component, inject, Input, signal, SimpleChanges } from '@angular/core';
 import {
-  MINUTES_FOR_SELECTOR,
-  OPEN_HOUR_FOR_SELECTOR,
+  AbstractControl,
+  FormControl,
+  FormGroup,
+  ReactiveFormsModule,
+  ValidationErrors,
+  ValidatorFn,
+  Validators,
+} from '@angular/forms';
+import {
+  HORAIRES_FERMETURE,
+  HORAIRES_OUVERTURE,
 } from '../../constants/app.constants';
+import { SleepingList } from '../../models/babee.model';
 import { TimeDiffPipe } from '../../pipes/time-diff.pipe';
+import { SleepingService } from '../../services/sleeping.service';
+import { stringToDateUTC } from '../../utils/app.utils';
 
 @Component({
   selector: 'app-sleeping',
-  imports: [TimeDiffPipe, FormsModule],
+  imports: [TimeDiffPipe, ReactiveFormsModule],
   templateUrl: './sleeping.component.html',
   styleUrl: './sleeping.component.css',
 })
@@ -16,28 +27,130 @@ export class SleepingComponent {
   @Input() date!: string;
   @Input() babeeId!: number;
 
-  debut: string = '08:00';
-  fin: string = '08:05';
-  plagesHoraires: { debut: string; fin: string }[] = [];
+  private readonly sleepingService = inject(SleepingService);
 
-  ajouterPlageHoraire() {
-    if (this.debut >= '08:00' && this.fin <= '18:00' && this.debut < this.fin) {
-      this.plagesHoraires.push({ debut: this.debut, fin: this.fin });
-    } else {
-      alert('Les heures doivent être entre 08:00 et 18:00 et début < fin.');
+  private readonly sleepingListSignal = signal<SleepingList>([]);
+
+  readonly isLoading = signal(true);
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['date'] || changes['babeeId']) {
+      this.fetchSleeping();
     }
   }
 
-  readonly todayDate = new Date().toISOString().split('T')[0];
+  private fetchSleeping() {
+    this.isLoading.set(true);
 
-  readonly hours = OPEN_HOUR_FOR_SELECTOR;
-  readonly minutes = MINUTES_FOR_SELECTOR;
+    this.sleepingService
+      .getSleepingByBabeeIdAndDate(this.babeeId, stringToDateUTC(this.date))
+      .subscribe({
+        next: (sleepinList) => {
+          this.sleepingListSignal.set(sleepinList);
+          this.isLoading.set(false);
+        },
+        error: (err) => {
+          console.error('Erreur lors de la récupération des activités', err);
+        },
+      });
+  }
 
-  readonly sleepList = signal([
+  sleepingList(): SleepingList {
+    return this.sleepingListSignal();
+  }
+
+  readonly form = new FormGroup(
     {
-      id: 1,
-      begin: '08:00',
-      end: '12:00',
+      begin: new FormControl('08:00', [Validators.required]),
+      end: new FormControl('08:05', [Validators.required]),
     },
-  ]);
+    { validators: timeRangeValidator() }
+  );
+
+  get begin(): FormControl {
+    return this.form.get('begin') as FormControl;
+  }
+
+  get end(): FormControl {
+    return this.form.get('end') as FormControl;
+  }
+
+  onSubmit() {
+    const isFormValid = this.form.valid;
+
+    if (isFormValid) {
+      const begin = this.begin.value;
+      const end = this.end.value;
+      const babeeId = this.babeeId;
+      const date = new Date();
+
+      const sleeping = {
+        begin: begin,
+        end: end,
+        babeeId: babeeId,
+        date: date,
+      };
+
+      this.sleepingService.createSleeping(sleeping).subscribe(() => {
+        this.form.patchValue({
+          begin: '08:00',
+          end: '08:05',
+        });
+        this.fetchSleeping();
+      });
+    }
+  }
+
+  openTimePicker() {
+    const input = document.getElementById('timeInput') as HTMLInputElement;
+    input?.focus();
+  }
+
+
+  deleteSleeping(id: number) {
+    this.sleepingService.deleteSleeping(id).subscribe(() => {
+      this.fetchSleeping();
+    });
+  }
+}
+
+export function timeRangeValidator(): ValidatorFn {
+  return (control: AbstractControl): ValidationErrors | null => {
+    const debut = control.get('debut')?.value;
+    const fin = control.get('fin')?.value;
+
+    if (!debut || !fin) {
+      return null;
+    }
+
+    const start = convertToMinutes(debut);
+    const end = convertToMinutes(fin);
+
+    const minStart = convertToMinutes(HORAIRES_OUVERTURE);
+    const maxEnd = convertToMinutes(HORAIRES_FERMETURE);
+
+    const errors: ValidationErrors = {};
+
+    if (start < minStart) {
+      errors['startTooEarly'] = "L'heure de début doit être après 08:00";
+    }
+
+    if (end > maxEnd) {
+      errors['endTooLate'] = "L'heure de fin doit être avant 18:45";
+    }
+
+    if (start >= end) {
+      errors['invalidRange'] =
+        "L'heure de début doit être avant l'heure de fin";
+    }
+
+    return Object.keys(errors).length ? errors : null;
+  };
+
+
+}
+
+function convertToMinutes(time: string): number {
+  const [hours, minutes] = time.split(':').map(Number);
+  return hours * 60 + minutes;
 }

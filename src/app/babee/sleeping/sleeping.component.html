@@ -11,13 +11,28 @@
       </tr>
     </thead>
     <tbody>
-      @for(sleep of sleepList(); track sleep.id) {
+      @if(isLoading()) {
+      <div class="d-flex justify-content-center">
+        <div class="spinner-border text-success" role="status">
+          <span class="visually-hidden">Loading...</span>
+        </div>
+      </div>
+      } @else { @for(sleep of sleepingList(); track sleep.id) {
       <tr class="text-center">
         <td>{{ sleep.begin }}</td>
         <td>{{ sleep.end }}</td>
         <td>{{ sleep.begin | timeDiff : sleep.end }}</td>
+        <td>
+          <button
+            class="btn"
+            aria-label="Close"
+            (click)="deleteSleeping(sleep.id!)"
+          >
+            <span class="text-danger" aria-hidden="true">&times;</span>
+          </button>
+        </td>
       </tr>
-      }
+      }}
     </tbody>
   </table>
 
@@ -31,7 +46,7 @@
         <option *ngFor="let time of timeOptions" [value]="time"></option>
       </datalist>
 
-      <form (ngSubmit)="ajouterPlageHoraire()">
+      <form [formGroup]="form" (ngSubmit)="onSubmit()">
         <div class="row mb-3">
           <div class="col-md-5">
             <label for="debut" class="form-label">Début</label>
@@ -39,8 +54,7 @@
               type="time"
               id="debut"
               class="form-control"
-              [(ngModel)]="debut"
-              name="debut"
+              formControlName="begin"
               required
             />
           </div>
@@ -51,15 +65,16 @@
               type="time"
               id="fin"
               class="form-control"
-              [(ngModel)]="fin"
-              name="fin"
+              formControlName="end"
               required
             />
           </div>
         </div>
 
         <div class="d-flex justify-content-end">
-          <button type="submit" class="btn btn-primary">Ajouter</button>
+          <button class="btn btn-primary" [disabled]="form.invalid">
+            Ajouter
+          </button>
         </div>
       </form>
     </div>

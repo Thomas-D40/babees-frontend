@@ -1,7 +1,7 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { InformationList } from '../models/babee.model';
+import { InformationList, Informations } from '../models/babee.model';
 import { getStartAndEndOfDay } from '../utils/app.utils';
 
 @Injectable({
@@ -30,5 +30,13 @@ export class InformationService {
       .set('date_lte', endOfDay);
 
     return this.httpClient.get<InformationList>(this.#BASE_URL, { params });
+  }
+
+  createInformation(information: Informations): Observable<Informations> {
+    return this.httpClient.post<Informations>(this.#BASE_URL, information);
+  }
+
+  deleteInformation(id: number): Observable<void> {
+    return this.httpClient.delete<void>(this.#BASE_URL + '/' + id);
   }
 }

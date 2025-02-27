@@ -47,7 +47,6 @@ export class CareActsComponent {
       .getCareActByBabeeIdAndDate(this.babeeId, stringToDateUTC(this.date))
       .subscribe({
         next: (careActList) => {
-          console.log(careActList);
           this.careActSignals.set(careActList);
           this.isLoading.set(false);
         },

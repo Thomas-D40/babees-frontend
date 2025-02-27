@@ -1,7 +1,7 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { HealthActList } from '../models/babee.model';
+import { HealthAct, HealthActList } from '../models/babee.model';
 import { getStartAndEndOfDay } from '../utils/app.utils';
 
 @Injectable({
@@ -9,7 +9,7 @@ import { getStartAndEndOfDay } from '../utils/app.utils';
 })
 export class HeathActService {
   readonly #BACKEND_URL = 'http://localhost:3000';
-  readonly #BASE_URL = this.#BACKEND_URL + '/heathAct';
+  readonly #BASE_URL = this.#BACKEND_URL + '/healthAct';
 
   private readonly httpClient = inject(HttpClient);
 
@@ -30,5 +30,13 @@ export class HeathActService {
       .set('date_lte', endOfDay);
 
     return this.httpClient.get<HealthActList>(this.#BASE_URL, { params });
+  }
+
+  createHealthAct(healthAct: HealthAct): Observable<HealthAct> {
+    return this.httpClient.post<HealthAct>(this.#BASE_URL, healthAct);
+  }
+
+  deleteHealthAct(id: number): Observable<void> {
+    return this.httpClient.delete<void>(this.#BASE_URL + '/' + id);
   }
 }
