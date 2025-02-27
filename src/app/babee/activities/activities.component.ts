@@ -1,58 +1,90 @@
 import {
   Component,
-  computed,
-  effect,
   inject,
-  Injector,
   Input,
   OnChanges,
-  runInInjectionContext,
-  Signal,
   signal,
   SimpleChanges,
 } from '@angular/core';
-import { ActivityService } from '../../services/activity.service';
-import { toSignal } from '@angular/core/rxjs-interop';
-import { getStartAndEndOfDay, stringToDateUTC } from '../../utils/app.utils';
-import { of } from 'rxjs';
+import {
+  FormControl,
+  FormGroup,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 import { ActivityList } from '../../models/babee.model';
+import { ActivityService } from '../../services/activity.service';
+import { stringToDateUTC } from '../../utils/app.utils';
 
 @Component({
   selector: 'app-activities',
-  imports: [],
+  imports: [ReactiveFormsModule],
   templateUrl: './activities.component.html',
   styleUrl: './activities.component.css',
 })
 export class ActivitiesComponent implements OnChanges {
-  @Input() date!: string;
-  @Input() babeeId!: number;
+  @Input({ required: true }) date!: string;
+  @Input({ required: true }) babeeId!: number;
 
   private readonly activityService = inject(ActivityService);
-  private injector = inject(Injector);
 
-  activites = runInInjectionContext(this.injector, () =>
-    toSignal(of(null as ActivityList | null))
-  );
+  private readonly activitesSignal = signal<ActivityList>([]);
+
+  readonly isLoading = signal(true);
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (this.date && this.babeeId) {
-      this.activites = runInInjectionContext(this.injector, () =>
-        toSignal(
-          this.activityService.getActivitiesByBabeeIdAndDate(
-            this.babeeId,
-            stringToDateUTC(this.date)
-          )
-        )
-      );
+    if (changes['date'] || changes['babeeId']) {
+      this.fetchActivities();
     }
   }
 
-  readonly activityList = signal([
-    {
-      id: 1,
-      label: 'Morpion',
-    },
-  ]);
+  private fetchActivities() {
+    this.isLoading.set(true);
 
-  onSubmit() {}
+    this.activityService
+      .getActivitiesByBabeeIdAndDate(this.babeeId, stringToDateUTC(this.date))
+      .subscribe({
+        next: (activities) => {
+          this.activitesSignal.set(activities);
+          this.isLoading.set(false);
+        },
+        error: (err) => {
+          console.error('Erreur lors de la récupération des activités', err);
+        },
+      });
+  }
+
+  activites(): ActivityList {
+    return this.activitesSignal();
+  }
+
+  readonly form = new FormGroup({
+    activityName: new FormControl('', [Validators.required]),
+  });
+
+  onSubmit() {
+    const babeeId = this.babeeId;
+    const isFormValid = this.form.valid;
+    const date = new Date();
+    const activityName = this.form.get('activityName') as FormControl;
+
+    if (isFormValid && babeeId) {
+      const activity = {
+        name: activityName.value,
+        date: date,
+        babeeId: babeeId,
+      };
+
+      this.activityService.createActivity(activity).subscribe(() => {
+        this.form.patchValue({ activityName: '' });
+        this.fetchActivities();
+      });
+    }
+  }
+
+  deleteActivity(activityId: number) {
+    this.activityService
+      .deleteActivity(activityId)
+      .subscribe(() => this.fetchActivities());
+  }
 }

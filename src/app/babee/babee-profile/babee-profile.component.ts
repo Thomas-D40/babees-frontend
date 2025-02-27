@@ -1,15 +1,15 @@
-import { Component, computed, inject, signal } from '@angular/core';
+import { Component, computed, inject } from '@angular/core';
+import { toSignal } from '@angular/core/rxjs-interop';
+import { FormControl, ReactiveFormsModule } from '@angular/forms';
+import { ActivatedRoute } from '@angular/router';
+import { catchError, map, of } from 'rxjs';
+import { BabeeService } from '../../services/babee.service';
 import { ActivitiesComponent } from '../activities/activities.component';
 import { CareActsComponent } from '../care-acts/care-acts.component';
 import { FeedingComponent } from '../feeding/feeding.component';
 import { HealthActsComponent } from '../health-acts/health-acts.component';
 import { InfosComponent } from '../infos/infos.component';
 import { SleepingComponent } from '../sleeping/sleeping.component';
-import { BabeeService } from '../../services/babee.service';
-import { ActivatedRoute } from '@angular/router';
-import { toSignal } from '@angular/core/rxjs-interop';
-import { catchError, map, of } from 'rxjs';
-import { FormControl, ReactiveFormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-babee-profile',
@@ -33,12 +33,6 @@ export class BabeeProfileComponent {
   readonly selectedDate = new FormControl(
     new Date().toISOString().slice(0, 10)
   );
-
-  // constructor() {
-  //   this.selectedDate.valueChanges.subscribe((newValue) => {
-  //     console.log('Nouvelle date sélectionnée:', newValue);
-  //   });
-  // }
 
   readonly #babeeResponse = toSignal(
     this.#babeeService.getBabeeById(this.babeeId).pipe(

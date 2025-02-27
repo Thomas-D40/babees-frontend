@@ -13,58 +13,55 @@
     <tbody>
       @for(sleep of sleepList(); track sleep.id) {
       <tr class="text-center">
-        <td>{{ sleep.begin | timeToHourFormat }}</td>
-        <td>{{ sleep.end | timeToHourFormat }}</td>
+        <td>{{ sleep.begin }}</td>
+        <td>{{ sleep.end }}</td>
         <td>{{ sleep.begin | timeDiff : sleep.end }}</td>
       </tr>
       }
     </tbody>
   </table>
 
-  <div class="container mt-4 border rounded">
-    <h5 class="mt-2 mb-3 text-center">Ajouter des horaires de sommeil</h5>
-    <div class="row g-3 mb-3 align-items-end d-flex">
-      <!-- Sélecteur de l'heure de début -->
-      <div class="col-auto">
-        <label class="form-label">Début</label>
-        <div class="d-flex align-items-center">
-          <select class="custom-select-small" name="endHour">
-            <option *ngFor="let hour of hours" [value]="hour">
-              {{ hour }}
-            </option>
-          </select>
-          <span class="mx-1">h</span>
-          <select class="custom-select-small" name="endHour">
-            <option *ngFor="let minute of minutes" [value]="minute">
-              {{ minute }}
-            </option>
-          </select>
-          <span class="mx-1">min</span>
-        </div>
-      </div>
+  <div class="container mt-4">
+    <div class="card p-4 shadow-sm">
+      <h5 class="card-title text-center mb-3">
+        Ajouter une période de sommeil
+      </h5>
 
-      <!-- Sélecteur de l'heure de fin -->
-      <div class="col-auto">
-        <label class="form-label">Fin</label>
-        <div class="d-flex align-items-center">
-          <select class="custom-select-small" name="endHour">
-            <option *ngFor="let hour of hours" [value]="hour">
-              {{ hour }}
-            </option>
-          </select>
-          <span class="mx-1">h</span>
-          <select class="custom-select-small" name="endHour">
-            <option *ngFor="let minute of minutes" [value]="minute">
-              {{ minute }}
-            </option>
-          </select>
-          <span class="mx-1">min</span>
-        </div>
-      </div>
+      <datalist id="times">
+        <option *ngFor="let time of timeOptions" [value]="time"></option>
+      </datalist>
 
-      <div class="col-auto justify-content-end">
-        <button type="submit " class="btn btn-primary mb-2">Ajouter</button>
-      </div>
+      <form (ngSubmit)="ajouterPlageHoraire()">
+        <div class="row mb-3">
+          <div class="col-md-5">
+            <label for="debut" class="form-label">Début</label>
+            <input
+              type="time"
+              id="debut"
+              class="form-control"
+              [(ngModel)]="debut"
+              name="debut"
+              required
+            />
+          </div>
+
+          <div class="col-md-5">
+            <label for="fin" class="form-label">Fin</label>
+            <input
+              type="time"
+              id="fin"
+              class="form-control"
+              [(ngModel)]="fin"
+              name="fin"
+              required
+            />
+          </div>
+        </div>
+
+        <div class="d-flex justify-content-end">
+          <button type="submit" class="btn btn-primary">Ajouter</button>
+        </div>
+      </form>
     </div>
   </div>
 </div>

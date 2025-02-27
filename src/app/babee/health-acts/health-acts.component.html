@@ -9,7 +9,7 @@
     <li class="list-group-item">
       <span style="font-weight: bold">Température:</span>
       {{ healthAct.temperature }}°C à
-      {{ healthAct.hour | timeToHourFormat }}
+      {{ healthAct.hour }}
     </li>
     } @if(healthAct.healthActType === 2) {
     <li class="list-group-item">
@@ -17,7 +17,7 @@
       {{ healthAct.quantity }}g de
       {{ healthAct.medicaments }}
       à
-      {{ healthAct.hour | timeToHourFormat }}
+      {{ healthAct.hour }}
     </li>
     } }
   </ul>
@@ -56,9 +56,19 @@
       />
       <div class="input-group mt-2 mb-3" style="max-width: 200px">
         <input type="number" class="form-control" id="quantity" />
-        <span class="input-group-text">g</span>
       </div>
       }
+      <div class="col-md-4">
+        <input
+          type="time"
+          id="fin"
+          class="form-control"
+          [(ngModel)]="heure"
+          name="fin"
+          list="times"
+          required
+        />
+      </div>
       <div class="d-flex justify-content-end">
         <button type="submit " class="btn btn-primary mb-2">Ajouter</button>
       </div>

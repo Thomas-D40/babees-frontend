@@ -4,27 +4,41 @@
 
   <!-- Liste des informations -->
   <ul class="list-group">
-    @for(activity of activityList(); track activity.id) {
-    <li class="list-group-item">{{ activity.label }}</li>
+    @if(isLoading()) {
+    <div class="d-flex justify-content-center">
+      <div class="spinner-border text-success" role="status">
+        <span class="visually-hidden">Loading...</span>
+      </div>
+    </div>
+    } @for(activity of activites(); track activity.id) {
+    <li
+      class="list-group-item d-flex justify-content-between align-items-center"
+    >
+      {{ activity.name }}
+      <button
+        class="btn"
+        aria-label="Close"
+        (click)="deleteActivity(activity.id!)"
+      >
+        <span class="text-danger" aria-hidden="true">&times;</span>
+      </button>
+    </li>
     }
   </ul>
 
   <div class="container mt-4 border rounded">
     <h5 class="mt-2 mb-3 text-center">Ajouter une activité</h5>
-    <form (ngSubmit)="onSubmit()">
-      <!-- <div class="mb-2">
-        <label for="commentaire">Commentaire :</label><br />
-        <textarea
-          id="commentaire"
-          name="commentaire"
+    <form [formGroup]="form" (ngSubmit)="onSubmit()">
+      <div class="mb-2">
+        <input
+          type="text"
           class="form-control"
-          rows="4"
-          placeholder="Votre commentaire..."
-        ></textarea>
-      </div> -->
+          formControlName="activityName"
+        />
+      </div>
 
       <div class="d-flex justify-content-end">
-        <button type="submit " class="btn btn-primary mb-2">Ajouter</button>
+        <button class="btn btn-primary mb-2">Ajouter</button>
       </div>
     </form>
   </div>

@@ -1,10 +1,10 @@
 import { NgFor } from '@angular/common';
 import { Component, Input, signal } from '@angular/core';
-import { TimeToHourPipe } from '../../pipes/time-to-hour.pipe';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-health-acts',
-  imports: [TimeToHourPipe, NgFor],
+  imports: [NgFor, FormsModule],
   templateUrl: './health-acts.component.html',
   styleUrl: './health-acts.component.css',
 })
@@ -15,6 +15,8 @@ export class HealthActsComponent {
   readonly healthActTypeList = ['Température', 'Médicaments'];
   readonly healthActTypeSelected = signal<string>('Température');
 
+  heure: string = '08:00';
+
   onChangeHealthActType(event: Event): void {
     const selectElement = event.target as HTMLSelectElement;
     const selectedValue = selectElement.value;
@@ -24,13 +26,13 @@ export class HealthActsComponent {
   readonly healthActList = signal([
     {
       id: 1,
-      hour: Date.now(),
+      hour: '08:45',
       healthActType: 1,
       temperature: 35,
     },
     {
       id: 2,
-      hour: Date.now(),
+      hour: '15:30',
       healthActType: 2,
       medicaments: 'Doliprane',
       quantity: 100,

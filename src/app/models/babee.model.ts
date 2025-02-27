@@ -10,20 +10,20 @@ export interface Babee {
 export type BabeeList = Babee[];
 
 export interface BaseItem {
-  id: number;
+  id?: number;
   babeeId: number;
   date: Date;
 }
 
 export interface Activity extends BaseItem {
   name: string;
-  activityType: number;
+  activityType?: number;
 }
 
 export type ActivityList = Activity[];
 
 export interface HealthAct extends BaseItem {
-  hour: Date;
+  hour: string;
   healthActType: number;
   temperature?: number;
   medicaments?: number;
@@ -33,8 +33,8 @@ export interface HealthAct extends BaseItem {
 export type HealthActList = HealthAct[];
 
 export interface Sleeping extends BaseItem {
-  begin: Date;
-  end: Date;
+  begin: string;
+  end: string;
   duration: number;
 }
 
