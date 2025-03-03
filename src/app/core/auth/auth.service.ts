@@ -1,24 +1,54 @@
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable, signal } from '@angular/core';
-import { delay, Observable, of } from 'rxjs';
+import { Router } from '@angular/router';
+import { map, Observable } from 'rxjs';
+import { User } from '../../models/babee.model';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
-  readonly #isLoggedIn = signal(false);
-  readonly isLoggedIn = this.#isLoggedIn.asReadonly();
-  readonly #isAdmin = signal(false);
-  readonly isAdmin = this.#isAdmin.asReadonly();
+  private user = signal<User>({} as User);
+  readonly #BACKEND_URL = 'http://localhost:3000';
+  readonly #BASE_URL = this.#BACKEND_URL + '/users';
 
-  login(name: string, password: string): Observable<boolean> {
-    const isLoggedIn = name === 'Pikachu' && password === 'pikachu';
+  constructor(private router: Router, private httpClient: HttpClient) {}
 
-    this.#isLoggedIn.set(isLoggedIn);
+  login(username: string, password: string): Observable<boolean> {
+    const params = new HttpParams()
+      .set('username', username)
+      .set('password', password);
 
-    if (name === 'Pikachu') {
-      this.#isAdmin.set(true);
-    }
+    return this.httpClient.get<any[]>(this.#BASE_URL, { params }).pipe(
+      map((users) => {
+        if (users.length > 0) {
+          const user = users[0];
+          this.user.set(user);
+          localStorage.setItem('user', JSON.stringify(user));
+          return true;
+        }
+        return false;
+      })
+    );
+  }
 
-    return of(isLoggedIn).pipe(delay(500));
+  setUser(user: { role: string; bebeId?: number }) {
+    this.user.set(user);
+  }
+
+  getUser(): User {
+    return this.user();
+  }
+
+  isCrecheStaff(): boolean {
+    return this.user()?.role === 'creche';
+  }
+
+  isParent(): boolean {
+    return this.user()?.role === 'parent';
+  }
+
+  getBebeId(): number | undefined {
+    return this.user()?.bebeId;
   }
 }

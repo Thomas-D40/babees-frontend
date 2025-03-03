@@ -6,9 +6,17 @@ export const AuthGuard: CanActivateFn = (route, state) => {
   const authService = inject(AuthService);
   const router = inject(Router);
 
-  if (!authService.isLoggedIn()) {
+  const user = authService.getUser();
+
+  if (!user) {
     router.navigate(['/login']);
     return false;
+  }
+
+  if (authService.isCrecheStaff()) {
+    router.navigate(['/bebe']);
+  } else if (authService.isParent()) {
+    router.navigate([`/bebe/${authService.getBebeId()}`]);
   }
 
   return true;

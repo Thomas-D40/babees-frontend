@@ -78,7 +78,7 @@ export class HealthActsComponent {
 
   readonly form = new FormGroup(
     {
-      healthActType: new FormControl('', [Validators.required]),
+      healthActType: new FormControl(1, [Validators.required]),
       temperature: new FormControl(''),
       nomMedicament: new FormControl(''),
       dosage: new FormControl(''),

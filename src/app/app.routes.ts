@@ -1,30 +1,32 @@
 import { Routes } from '@angular/router';
-import { BabeeProfileComponent } from './babee/babee-profile/babee-profile.component';
 import { BabeeListComponent } from './babee/babee-list/babee-list.component';
+import { BabeeProfileComponent } from './babee/babee-profile/babee-profile.component';
+import { LoginComponent } from './login/login/login.component';
 
 export const routes: Routes = [
-    {
+  {
     path: 'bebe',
     children: [
-        {
-            path: ':id',
-            component: BabeeProfileComponent,
-            title: 'Babee'
-        },
-        {
-            path: '',
-            component: BabeeListComponent
-        }
-    ]}, 
-    // {
-    //     path: 'login',
-    // },
-    {
+      {
+        path: ':id',
+        component: BabeeProfileComponent,
+        title: 'Babee',
+        // canActivate: [AuthGuard],
+      },
+      {
         path: '',
-        redirectTo: 'bebe',
-        pathMatch: 'full'
-    },
-    // {
-    //     path: '**'
-    // }
+        component: BabeeListComponent,
+        // canActivate: [AuthGuard],
+      },
+    ],
+  },
+  {
+    path: 'login',
+    component: LoginComponent,
+  },
+  {
+    path: '',
+    redirectTo: 'bebe',
+    pathMatch: 'full',
+  },
 ];

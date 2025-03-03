@@ -72,6 +72,7 @@
           formControlName="temperature"
           class="form-control"
           id="temperature"
+          [class.is-invalid]="form.dirty && temperature.invalid"
         />
         <span class="input-group-text">°C</span>
       </div>

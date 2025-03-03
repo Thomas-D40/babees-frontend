@@ -47,6 +47,12 @@
       "date": "2025-02-27T09:32:23.915Z",
       "babeeId": 1,
       "id": 9
+    },
+    {
+      "name": "Dodo",
+      "date": "2025-02-28T09:55:45.896Z",
+      "babeeId": 1,
+      "id": 10
     }
   ],
   "activityTypes": [
@@ -98,6 +104,26 @@
       "nomMedicament": "",
       "dosage": "",
       "id": 4
+    },
+    {
+      "babeeId": 1,
+      "date": "2025-02-28T08:12:28.662Z",
+      "healthActType": 1,
+      "heure": "08:00",
+      "temperature": 36.8,
+      "nomMedicament": "",
+      "dosage": "",
+      "id": 5
+    },
+    {
+      "babeeId": 1,
+      "date": "2025-02-28T09:56:19.571Z",
+      "healthActType": "2",
+      "heure": "11:06",
+      "temperature": "",
+      "nomMedicament": "Doliprane",
+      "dosage": "15mg",
+      "id": 6
     }
   ],
   "healthActTypes": [
@@ -142,6 +168,13 @@
       "babeeId": 1,
       "date": "2025-02-27T14:04:49.218Z",
       "id": 5
+    },
+    {
+      "begin": "08:00",
+      "end": "08:05",
+      "babeeId": 1,
+      "date": "2025-02-28T09:55:51.214Z",
+      "id": 6
     }
   ],
   "careAct": [
@@ -176,6 +209,30 @@
       "careActDetail": 3,
       "commentaire": "",
       "id": 6
+    },
+    {
+      "date": "2025-02-28T09:55:55.505Z",
+      "babeeId": 1,
+      "careActType": 1,
+      "careActDetail": 2,
+      "commentaire": "",
+      "id": 7
+    },
+    {
+      "date": "2025-02-28T09:55:57.184Z",
+      "babeeId": 1,
+      "careActType": 3,
+      "careActDetail": null,
+      "commentaire": "",
+      "id": 8
+    },
+    {
+      "date": "2025-02-28T09:55:59.598Z",
+      "babeeId": 1,
+      "careActType": 4,
+      "careActDetail": null,
+      "commentaire": "",
+      "id": 9
     }
   ],
   "feeding": [
@@ -208,6 +265,34 @@
       "date": "2025-02-27T09:34:58.896Z",
       "babeeId": 1,
       "id": 3
+    },
+    {
+      "commentaire": "test",
+      "date": "2025-02-28T09:55:49.475Z",
+      "babeeId": 1,
+      "id": 4
+    }
+  ],
+  "users": [
+    {
+      "id": 1,
+      "username": "admin",
+      "password": "admin",
+      "role": "creche"
+    },
+    {
+      "id": 2,
+      "username": "parent1",
+      "password": "parent1",
+      "role": "parent",
+      "bebeId": 1
+    },
+    {
+      "id": 3,
+      "username": "parent2",
+      "password": "parent2",
+      "role": "parent",
+      "bebeId": 2
     }
   ]
 }

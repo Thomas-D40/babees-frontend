@@ -58,6 +58,11 @@ export interface Informations extends BaseItem {
 
 export type InformationList = Informations[];
 
+export interface User {
+  role: string;
+  bebeId?: number;
+}
+
 export const CARE_ACT_TYPE_LIST = [
   {
     id: 1,
