@@ -48,7 +48,9 @@ export interface CareAct extends BaseItem {
 
 export type CareActList = CareAct[];
 
-export interface Feeding extends BaseItem {}
+export interface Feeding extends BaseItem {
+  feedingInformations: string[];
+}
 
 export type FeedingList = Feeding[];
 

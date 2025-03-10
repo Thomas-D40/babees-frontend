@@ -1,12 +1,23 @@
-import { NgFor } from '@angular/common';
-import { Component, Input } from '@angular/core';
+import { JsonPipe, NgFor } from '@angular/common';
+import {
+  Component,
+  computed,
+  inject,
+  Input,
+  signal,
+  SimpleChanges,
+} from '@angular/core';
 import {
   FormBuilder,
   FormControl,
   FormGroup,
   FormsModule,
   ReactiveFormsModule,
+  Validators,
 } from '@angular/forms';
+import { FeedingList } from '../../models/babee.model';
+import { FeedingService } from '../../services/feeding.service';
+import { stringToDateUTC } from '../../utils/app.utils';
 
 @Component({
   selector: 'app-feeding',
@@ -17,39 +28,43 @@ import {
 export class FeedingComponent {
   @Input() date!: string;
   @Input() babeeId!: number;
-  onSubmit() {}
 
-  form: FormGroup;
-  options = [2, 3, 4, 5]; // Nombre de FormControl possibles
+  mealOptions = ['A gouté', 'En partie', 'Entièrement'];
 
-  constructor(private fb: FormBuilder) {
-    this.form = this.fb.group({
-      selectedOption: new FormControl(2), // Option par défaut (2 FormControl)
-      dynamicFields: this.fb.array([]), // FormArray qui contiendra les FormControl dynamiques
-    });
-    this.repas.forEach((ligne) => {
-      this.checkedOptions[ligne] = {};
-      this.mealOptions.forEach((option) => {
-        this.checkedOptions[ligne][option] = false;
+  private readonly feedingService = inject(FeedingService);
+
+  private readonly feedingListSignal = signal<FeedingList>([]);
+
+  feedingList(): FeedingList {
+    return this.feedingListSignal();
+  }
+
+  readonly isLoading = signal(true);
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['date'] || changes['babeeId']) {
+      this.fetchFeedingList();
+    }
+  }
+
+  private fetchFeedingList() {
+    this.isLoading.set(true);
+
+    this.feedingService
+      .getFeedingByBabeeIdAndDate(this.babeeId, stringToDateUTC(this.date))
+      .subscribe({
+        next: (feedingList) => {
+          this.feedingListSignal.set(feedingList);
+          this.isLoading.set(false);
+        },
+        error: (err) => {
+          console.error('Erreur lors de la récupération des activités', err);
+        },
       });
-    });
   }
 
-  selectedKey: keyof typeof this.repas_V2 = 'biberon';
-
-  objectKeys(obj: object): string[] {
-    return Object.keys(obj);
-  }
-
-  repas = [
-    'Sauté de porc',
-    'Colin',
-    'Purée de céléri',
-    'Purée pomme groseille',
-  ];
-
-  repas_V2: { [key in 'biberon' | 'petit' | 'moyen' | 'grand']: string[] } = {
-    biberon: [],
+  repas_V2: { [key: string]: string[] } = {
+    biberon: [], // Voir pour se débarasser de biberons
     petit: [
       'Sauté de porc',
       'Colin',
@@ -70,13 +85,109 @@ export class FeedingComponent {
       'Fraidou',
       'Purée pomme groseille',
     ],
+    gouter_petit: ['yaourt nature', 'compote pommes-badiane'],
+    gouter_moyen: ['yaourt nature', 'compote pommes-badiane', 'pain'],
+    gouter_grand: ['yaourt nature', 'compote pommes-badiane', 'pain'],
   };
 
-  mealOptions = ['A gouté', 'En partie', 'Entièrement'];
+  selectedKey = signal<'biberon' | 'petit' | 'moyen' | 'grand'>('petit');
 
-  checkedOptions: { [key: string]: { [key: string]: boolean } } = {};
+  // MEAL
+  mealFormGroup = computed<FormGroup>(() => this.createMealForm());
 
-  toggleCheckbox(ligne: string, option: string) {
-    this.checkedOptions[ligne][option] = !this.checkedOptions[ligne][option];
+  constructor(private fb: FormBuilder) {}
+
+  createMealForm(): FormGroup {
+    const group = {} as Record<string, FormControl>;
+
+    const key = this.selectedKey();
+    if (key && this.repas_V2[key]) {
+      this.repas_V2[key].forEach((plat) => {
+        this.mealOptions.forEach((option) => {
+          const controlName = this.getMealControlName(plat, option);
+          group[controlName] = new FormControl(false, { nonNullable: true });
+        });
+      });
+    }
+
+    console.log('FormGroup updated:', group);
+    return this.fb.group(group);
+  }
+
+  getMealControlName(ligne: string, option: string): string {
+    return `${ligne}-${option}`.replace(/\s+/g, '_');
+  }
+
+  getMealControl(ligne: string, option: string): FormControl {
+    const controlName = this.getMealControlName(ligne, option);
+    return this.mealFormGroup().get(controlName) as FormControl;
+  }
+
+  toggleCheckbox(ligne: string, option: string): void {
+    const control = this.getMealControl(ligne, option);
+    control.setValue(!control.value);
+  }
+
+  objectKeys(object: Object) {
+    return Object.keys(object);
+  }
+
+  onMealFormSubmit() {
+    const informations: Map<string, string> = new Map([]);
+    const mealInformations: string[] = [];
+    const formValues = this.mealFormGroup().value;
+    const isFormValid = this.mealFormGroup().valid;
+
+    if (isFormValid) {
+      Object.keys(formValues).forEach((key: string) => {
+        if (formValues[key]) {
+          let [meal, quantity] = key.split('-');
+          meal = meal.replace(/_/g, ' ');
+          quantity = quantity.replace(/_/g, ' ');
+          mealInformations.push(meal + ' - ' + quantity);
+        }
+      });
+
+      const feeding = {
+        babeeId: this.babeeId,
+        date: new Date(),
+        feedingInformations: mealInformations,
+      };
+
+      this.feedingService.createFeeding(feeding).subscribe(() => {
+        this.fetchFeedingList();
+      });
+    }
+  }
+
+  // Bottle
+  readonly bottleForm = new FormGroup({
+    quantity: new FormControl('', [Validators.required]),
+  });
+
+  get quantity(): FormControl {
+    return this.bottleForm.get('quantity') as FormControl;
+  }
+
+  onBottleFormSubmit() {
+    const isFormValid = this.bottleForm.valid;
+
+    if (isFormValid) {
+      const feeding = {
+        babeeId: this.babeeId,
+        date: new Date(),
+        feedingInformations: ['Biberon - ' + this.quantity.value],
+      };
+
+      this.feedingService.createFeeding(feeding).subscribe(() => {
+        this.fetchFeedingList();
+      });
+    }
+  }
+
+  deleteFeeding(id: number) {
+    this.feedingService.deleteFeeding(id).subscribe(() => {
+      this.fetchFeedingList();
+    });
   }
 }

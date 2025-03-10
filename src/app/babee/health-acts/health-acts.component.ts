@@ -1,12 +1,5 @@
 import { NgFor } from '@angular/common';
-import {
-  Component,
-  effect,
-  inject,
-  Input,
-  signal,
-  SimpleChanges,
-} from '@angular/core';
+import { Component, inject, Input, signal, SimpleChanges } from '@angular/core';
 import {
   AbstractControl,
   FormControl,
@@ -37,12 +30,6 @@ export class HealthActsComponent {
   private readonly healthActListSignal = signal<HealthActList>([]);
 
   readonly isLoading = signal(true);
-
-  constructor() {
-    effect(() => {
-      console.log(this.healthActList());
-    });
-  }
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['date'] || changes['babeeId']) {
@@ -153,8 +140,6 @@ function healthActDetailRequiredValidator(): ValidatorFn {
     temperature?.setErrors(null);
     medicaments?.setErrors(null);
     dosage?.setErrors(null);
-
-    console.log(healthAct);
 
     if (healthAct == 1 && !temperature?.value) {
       temperature?.setErrors({ required: true });

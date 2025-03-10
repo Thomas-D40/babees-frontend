@@ -53,6 +53,18 @@
       "date": "2025-02-28T09:55:45.896Z",
       "babeeId": 1,
       "id": 10
+    },
+    {
+      "name": "dodo",
+      "date": "2025-03-10T18:39:17.382Z",
+      "babeeId": 1,
+      "id": 11
+    },
+    {
+      "name": "coloriage",
+      "date": "2025-03-10T18:39:21.616Z",
+      "babeeId": 1,
+      "id": 12
     }
   ],
   "activityTypes": [
@@ -124,6 +136,16 @@
       "nomMedicament": "Doliprane",
       "dosage": "15mg",
       "id": 6
+    },
+    {
+      "babeeId": 1,
+      "date": "2025-03-10T15:36:58.663Z",
+      "healthActType": 1,
+      "heure": "08:00",
+      "temperature": 35,
+      "nomMedicament": "",
+      "dosage": "",
+      "id": 7
     }
   ],
   "healthActTypes": [
@@ -237,14 +259,31 @@
   ],
   "feeding": [
     {
-      "id": 1,
-      "babeeId": 1,
-      "date": "2025-02-25T12:00:00"
+      "babeeId": 2,
+      "date": "2025-03-10T15:50:58.551Z",
+      "feedingInformations": [
+        "Sauté de porc - A gouté"
+      ],
+      "id": 8
     },
     {
-      "id": 2,
-      "babeeId": 2,
-      "date": "2025-02-25T12:00:00"
+      "babeeId": 1,
+      "date": "2025-03-10T18:38:27.766Z",
+      "feedingInformations": [
+        "Sauté de porc - A gouté",
+        "Semoule - Entièrement"
+      ],
+      "id": 9
+    },
+    {
+      "babeeId": 1,
+      "date": "2025-03-10T18:38:34.293Z",
+      "feedingInformations": [
+        "yaourt nature - A gouté",
+        "compote pommes - badiane",
+        "pain - Entièrement"
+      ],
+      "id": 10
     }
   ],
   "information": [

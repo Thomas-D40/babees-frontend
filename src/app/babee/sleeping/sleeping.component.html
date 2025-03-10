@@ -48,26 +48,40 @@
 
       <form [formGroup]="form" (ngSubmit)="onSubmit()">
         <div class="row mb-3">
+          <!-- Début -->
           <div class="col-md-5">
             <label for="debut" class="form-label">Début</label>
-            <input
-              type="time"
-              id="debut"
-              class="form-control"
-              formControlName="begin"
-              required
-            />
+            <div class="input-group">
+              <input
+                type="time"
+                id="debut"
+                class="form-control"
+                formControlName="begin"
+                step="300"
+                required
+              />
+              <span class="input-group-text">
+                <i class="bi bi-clock"></i>
+              </span>
+            </div>
           </div>
 
+          <!-- Fin -->
           <div class="col-md-5">
             <label for="fin" class="form-label">Fin</label>
-            <input
-              type="time"
-              id="fin"
-              class="form-control"
-              formControlName="end"
-              required
-            />
+            <div class="input-group">
+              <input
+                type="time"
+                id="fin"
+                class="form-control"
+                formControlName="end"
+                step="300"
+                required
+              />
+              <span class="input-group-text">
+                <i class="bi bi-clock"></i>
+              </span>
+            </div>
           </div>
         </div>
 

@@ -1,7 +1,7 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { FeedingList } from '../models/babee.model';
+import { Feeding, FeedingList } from '../models/babee.model';
 import { getStartAndEndOfDay } from '../utils/app.utils';
 
 @Injectable({
@@ -30,5 +30,13 @@ export class FeedingService {
       .set('date_lte', endOfDay);
 
     return this.httpClient.get<FeedingList>(this.#BASE_URL, { params });
+  }
+
+  createFeeding(feeding: Feeding): Observable<Feeding> {
+    return this.httpClient.post<Feeding>(this.#BASE_URL, feeding);
+  }
+
+  deleteFeeding(id: number): Observable<void> {
+    return this.httpClient.delete<void>(this.#BASE_URL + '/' + id);
   }
 }
