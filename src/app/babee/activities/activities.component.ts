@@ -12,7 +12,7 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { ActivityList } from '../../models/babee.model';
+import { ActivityList, UUID } from '../../models/babee.model';
 import { ActivityService } from '../../services/activity.service';
 import { stringToDateUTC } from '../../utils/app.utils';
 
@@ -24,7 +24,7 @@ import { stringToDateUTC } from '../../utils/app.utils';
 })
 export class ActivitiesComponent implements OnChanges {
   @Input({ required: true }) date!: string;
-  @Input({ required: true }) babeeId!: number;
+  @Input({ required: true }) babeeId!: UUID;
 
   private readonly activityService = inject(ActivityService);
 
@@ -71,7 +71,7 @@ export class ActivitiesComponent implements OnChanges {
     if (isFormValid && babeeId) {
       const activity = {
         name: activityName.value,
-        date: date,
+        eventDate: date,
         babeeId: babeeId,
       };
 
@@ -82,7 +82,7 @@ export class ActivitiesComponent implements OnChanges {
     }
   }
 
-  deleteActivity(activityId: number) {
+  deleteActivity(activityId: UUID) {
     this.activityService
       .deleteActivity(activityId)
       .subscribe(() => this.fetchActivities());

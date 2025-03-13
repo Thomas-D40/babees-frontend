@@ -1,26 +1,27 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { Activity, ActivityList } from '../models/babee.model';
+import { environment } from '../../environments/environment';
+import { Activity, ActivityList, UUID } from '../models/babee.model';
 import { getStartAndEndOfDay } from '../utils/app.utils';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ActivityService {
-  readonly #BACKEND_URL = 'http://localhost:3000';
+  readonly #BACKEND_URL = environment.backendUrl;
   readonly #BASE_URL = this.#BACKEND_URL + '/activity';
 
   private readonly httpClient = inject(HttpClient);
 
-  getActivitiesByBabeeId(babeeId: number): Observable<ActivityList> {
+  getActivitiesByBabeeId(babeeId: UUID): Observable<ActivityList> {
     const params = new HttpParams().set('babeeId', babeeId);
 
     return this.httpClient.get<ActivityList>(this.#BASE_URL, { params });
   }
 
   getActivitiesByBabeeIdAndDate(
-    babeeId: number,
+    babeeId: UUID,
     date: Date
   ): Observable<ActivityList> {
     const { startOfDay, endOfDay } = getStartAndEndOfDay(date);
@@ -36,7 +37,7 @@ export class ActivityService {
     return this.httpClient.post<Activity>(this.#BASE_URL, activity);
   }
 
-  deleteActivity(activityId: number): Observable<void> {
+  deleteActivity(activityId: UUID): Observable<void> {
     return this.httpClient.delete<void>(this.#BASE_URL + '/' + activityId);
   }
 }

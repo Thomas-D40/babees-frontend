@@ -1,26 +1,27 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { Sleeping, SleepingList } from '../models/babee.model';
+import { environment } from '../../environments/environment';
+import { Sleeping, SleepingList, UUID } from '../models/babee.model';
 import { getStartAndEndOfDay } from '../utils/app.utils';
 
 @Injectable({
   providedIn: 'root',
 })
 export class SleepingService {
-  readonly #BACKEND_URL = 'http://localhost:3000';
+  readonly #BACKEND_URL = environment.backendUrl;
   readonly #BASE_URL = this.#BACKEND_URL + '/sleeping';
 
   private readonly httpClient = inject(HttpClient);
 
-  getSleepingByBabeeId(babeeId: number): Observable<SleepingList> {
+  getSleepingByBabeeId(babeeId: UUID): Observable<SleepingList> {
     const params = new HttpParams().set('babeeId', babeeId);
 
     return this.httpClient.get<SleepingList>(this.#BASE_URL, { params });
   }
 
   getSleepingByBabeeIdAndDate(
-    babeeId: number,
+    babeeId: UUID,
     date: Date
   ): Observable<SleepingList> {
     const { startOfDay, endOfDay } = getStartAndEndOfDay(date);
@@ -36,7 +37,7 @@ export class SleepingService {
     return this.httpClient.post<Sleeping>(this.#BASE_URL, sleep);
   }
 
-  deleteSleeping(id: number): Observable<void> {
+  deleteSleeping(id: UUID): Observable<void> {
     return this.httpClient.delete<void>(this.#BASE_URL + '/' + id);
   }
 }

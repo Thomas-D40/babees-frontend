@@ -12,10 +12,10 @@ import {
   HORAIRES_FERMETURE,
   HORAIRES_OUVERTURE,
 } from '../../constants/app.constants';
-import { SleepingList } from '../../models/babee.model';
+import { SleepingList, UUID } from '../../models/babee.model';
 import { TimeDiffPipe } from '../../pipes/time-diff.pipe';
 import { SleepingService } from '../../services/sleeping.service';
-import { stringToDateUTC } from '../../utils/app.utils';
+import { addSecondsToHour, stringToDateUTC } from '../../utils/app.utils';
 
 @Component({
   selector: 'app-sleeping',
@@ -25,7 +25,7 @@ import { stringToDateUTC } from '../../utils/app.utils';
 })
 export class SleepingComponent {
   @Input() date!: string;
-  @Input() babeeId!: number;
+  @Input() babeeId!: UUID;
 
   private readonly sleepingService = inject(SleepingService);
 
@@ -61,40 +61,40 @@ export class SleepingComponent {
 
   readonly form = new FormGroup(
     {
-      begin: new FormControl('08:00', [Validators.required]),
-      end: new FormControl('08:05', [Validators.required]),
+      beginHour: new FormControl('08:00', [Validators.required]),
+      endHour: new FormControl('08:05', [Validators.required]),
     },
     { validators: timeRangeValidator() }
   );
 
-  get begin(): FormControl {
-    return this.form.get('begin') as FormControl;
+  get beginHour(): FormControl {
+    return this.form.get('beginHour') as FormControl;
   }
 
-  get end(): FormControl {
-    return this.form.get('end') as FormControl;
+  get endHour(): FormControl {
+    return this.form.get('endHour') as FormControl;
   }
 
   onSubmit() {
     const isFormValid = this.form.valid;
 
     if (isFormValid) {
-      const begin = this.begin.value;
-      const end = this.end.value;
+      const beginHour = this.beginHour.value;
+      const endHour = this.endHour.value;
       const babeeId = this.babeeId;
       const date = new Date();
 
       const sleeping = {
-        begin: begin,
-        end: end,
+        beginHour: addSecondsToHour(beginHour),
+        endHour: addSecondsToHour(endHour),
         babeeId: babeeId,
-        date: date,
+        eventDate: date,
       };
 
       this.sleepingService.createSleeping(sleeping).subscribe(() => {
         this.form.patchValue({
-          begin: '08:00',
-          end: '08:05',
+          beginHour: '08:00',
+          endHour: '08:05',
         });
         this.fetchSleeping();
       });
@@ -106,8 +106,7 @@ export class SleepingComponent {
     input?.focus();
   }
 
-
-  deleteSleeping(id: number) {
+  deleteSleeping(id: UUID) {
     this.sleepingService.deleteSleeping(id).subscribe(() => {
       this.fetchSleeping();
     });
@@ -146,8 +145,6 @@ export function timeRangeValidator(): ValidatorFn {
 
     return Object.keys(errors).length ? errors : null;
   };
-
-
 }
 
 function convertToMinutes(time: string): number {

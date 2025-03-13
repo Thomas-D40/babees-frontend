@@ -19,9 +19,9 @@
       </div>
       } @else { @for(sleep of sleepingList(); track sleep.id) {
       <tr class="text-center">
-        <td>{{ sleep.begin }}</td>
-        <td>{{ sleep.end }}</td>
-        <td>{{ sleep.begin | timeDiff : sleep.end }}</td>
+        <td>{{ sleep.beginHour }}</td>
+        <td>{{ sleep.endHour }}</td>
+        <td>{{ sleep.beginHour | timeDiff : sleep.endHour }}</td>
         <td>
           <button
             class="btn"
@@ -54,15 +54,12 @@
             <div class="input-group">
               <input
                 type="time"
-                id="debut"
+                id="beginHour"
                 class="form-control"
-                formControlName="begin"
+                formControlName="beginHour"
                 step="300"
                 required
               />
-              <span class="input-group-text">
-                <i class="bi bi-clock"></i>
-              </span>
             </div>
           </div>
 
@@ -72,15 +69,12 @@
             <div class="input-group">
               <input
                 type="time"
-                id="fin"
+                id="endHour"
                 class="form-control"
-                formControlName="end"
+                formControlName="endHour"
                 step="300"
                 required
               />
-              <span class="input-group-text">
-                <i class="bi bi-clock"></i>
-              </span>
             </div>
           </div>
         </div>

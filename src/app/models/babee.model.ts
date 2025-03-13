@@ -1,40 +1,42 @@
+export type UUID = `${string}-${string}-${string}-${string}-${string}`;
+
 export interface Babee {
-  id: number;
-  prenom: string;
-  nom: string;
-  dateNaissance: Date;
-  age: number;
+  id: UUID;
+  firstName: string;
+  lastName: string;
+  birthDate: Date;
   photoUrl: string;
 }
 
 export type BabeeList = Babee[];
 
 export interface BaseItem {
-  id?: number;
-  babeeId: number;
-  date: Date;
+  id?: UUID;
+  babeeId: UUID;
+  eventDate: Date;
 }
 
 export interface Activity extends BaseItem {
   name: string;
   activityType?: number;
+  comment?: string;
 }
 
 export type ActivityList = Activity[];
 
 export interface HealthAct extends BaseItem {
-  heure: string;
+  actHour: string;
   healthActType: number;
   temperature?: number;
-  nomMedicament?: number;
+  medecine?: number;
   dosage?: number;
 }
 
 export type HealthActList = HealthAct[];
 
 export interface Sleeping extends BaseItem {
-  begin: string;
-  end: string;
+  beginHour: string;
+  endHour: string;
   duration?: number;
 }
 
@@ -43,7 +45,7 @@ export type SleepingList = Sleeping[];
 export interface CareAct extends BaseItem {
   careActType: number;
   careActDetail?: number;
-  commentaire?: string;
+  comment?: string;
 }
 
 export type CareActList = CareAct[];
@@ -55,7 +57,7 @@ export interface Feeding extends BaseItem {
 export type FeedingList = Feeding[];
 
 export interface Informations extends BaseItem {
-  commentaire?: string;
+  comment?: string;
 }
 
 export type InformationList = Informations[];

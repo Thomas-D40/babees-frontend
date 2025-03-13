@@ -1,26 +1,27 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { InformationList, Informations } from '../models/babee.model';
+import { environment } from '../../environments/environment';
+import { InformationList, Informations, UUID } from '../models/babee.model';
 import { getStartAndEndOfDay } from '../utils/app.utils';
 
 @Injectable({
   providedIn: 'root',
 })
 export class InformationService {
-  readonly #BACKEND_URL = 'http://localhost:3000';
+  readonly #BACKEND_URL = environment.backendUrl;
   readonly #BASE_URL = this.#BACKEND_URL + '/information';
 
   private readonly httpClient = inject(HttpClient);
 
-  getInformationByBabeeId(babeeId: number): Observable<InformationList> {
+  getInformationByBabeeId(babeeId: UUID): Observable<InformationList> {
     const params = new HttpParams().set('babeeId', babeeId);
 
     return this.httpClient.get<InformationList>(this.#BASE_URL, { params });
   }
 
   getInformationByBabeeIdAndDate(
-    babeeId: number,
+    babeeId: UUID,
     date: Date
   ): Observable<InformationList> {
     const { startOfDay, endOfDay } = getStartAndEndOfDay(date);
@@ -36,7 +37,7 @@ export class InformationService {
     return this.httpClient.post<Informations>(this.#BASE_URL, information);
   }
 
-  deleteInformation(id: number): Observable<void> {
+  deleteInformation(id: UUID): Observable<void> {
     return this.httpClient.delete<void>(this.#BASE_URL + '/' + id);
   }
 }

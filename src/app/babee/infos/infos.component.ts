@@ -5,7 +5,7 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { InformationList } from '../../models/babee.model';
+import { InformationList, UUID } from '../../models/babee.model';
 import { InformationService } from '../../services/information.service';
 import { stringToDateUTC } from '../../utils/app.utils';
 
@@ -17,7 +17,7 @@ import { stringToDateUTC } from '../../utils/app.utils';
 })
 export class InfosComponent {
   @Input() date!: string;
-  @Input() babeeId!: number;
+  @Input() babeeId!: UUID;
 
   private readonly informationsService = inject(InformationService);
 
@@ -52,11 +52,11 @@ export class InfosComponent {
   }
 
   readonly form = new FormGroup({
-    commentaire: new FormControl('', [Validators.required]),
+    comment: new FormControl('', [Validators.required]),
   });
 
-  get commentaire(): FormControl {
-    return this.form.get('commentaire') as FormControl;
+  get comment(): FormControl {
+    return this.form.get('comment') as FormControl;
   }
 
   onSubmit() {
@@ -66,19 +66,19 @@ export class InfosComponent {
 
     if (isFormValid && babeeId) {
       const information = {
-        commentaire: this.commentaire.value,
-        date: date,
+        comment: this.comment.value,
+        eventDate: date,
         babeeId: babeeId,
       };
 
       this.informationsService.createInformation(information).subscribe(() => {
-        this.form.patchValue({ commentaire: '' });
+        this.form.patchValue({ comment: '' });
         this.fetchInformations();
       });
     }
   }
 
-  deleteInformation(id: number) {
+  deleteInformation(id: UUID) {
     this.informationsService
       .deleteInformation(id)
       .subscribe(() => this.fetchInformations());

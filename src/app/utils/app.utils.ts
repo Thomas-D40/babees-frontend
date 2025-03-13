@@ -11,6 +11,7 @@ export function getStartAndEndOfDay(date: Date): {
     0,
     0
   );
+
   const endOfDay = new Date(
     date.getFullYear(),
     date.getMonth(),
@@ -34,4 +35,8 @@ export function stringToDateUTC(dateString: string) {
   const [year, month, day] = dateString.split('-').map(Number);
 
   return new Date(Date.UTC(year, month - 1, day));
+}
+
+export function addSecondsToHour(hour: string) {
+  return hour + ':00';
 }

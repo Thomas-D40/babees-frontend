@@ -17,7 +17,7 @@
     >
       <span style="font-weight: bold">Température:</span>
       {{ healthAct.temperature }}°C à
-      {{ healthAct.heure }}
+      {{ healthAct.actHour }}
       <button
         class="btn"
         aria-label="Close"
@@ -32,9 +32,9 @@
     >
       <span style="font-weight: bold">Médicaments:</span>
       {{ healthAct.dosage }} de
-      {{ healthAct.nomMedicament }}
+      {{ healthAct.medecine }}
       à
-      {{ healthAct.heure }}
+      {{ healthAct.actHour }}
       <button
         class="btn"
         aria-label="Close"
@@ -96,9 +96,9 @@
       <div class="col-md-4">
         <input
           type="time"
-          id="fin"
+          id="actHour"
           class="form-control"
-          formControlName="heure"
+          formControlName="actHour"
           list="times"
           required
         />

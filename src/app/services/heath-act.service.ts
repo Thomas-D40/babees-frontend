@@ -1,26 +1,27 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { HealthAct, HealthActList } from '../models/babee.model';
+import { environment } from '../../environments/environment';
+import { HealthAct, HealthActList, UUID } from '../models/babee.model';
 import { getStartAndEndOfDay } from '../utils/app.utils';
 
 @Injectable({
   providedIn: 'root',
 })
 export class HeathActService {
-  readonly #BACKEND_URL = 'http://localhost:3000';
-  readonly #BASE_URL = this.#BACKEND_URL + '/healthAct';
+  readonly #BACKEND_URL = environment.backendUrl;
+  readonly #BASE_URL = this.#BACKEND_URL + '/health-act';
 
   private readonly httpClient = inject(HttpClient);
 
-  getHeathActByBabeeId(babeeId: number): Observable<HealthActList> {
+  getHeathActByBabeeId(babeeId: UUID): Observable<HealthActList> {
     const params = new HttpParams().set('babeeId', babeeId);
 
     return this.httpClient.get<HealthActList>(this.#BASE_URL, { params });
   }
 
   getHeathActByBabeeIdAndDate(
-    babeeId: number,
+    babeeId: UUID,
     date: Date
   ): Observable<HealthActList> {
     const { startOfDay, endOfDay } = getStartAndEndOfDay(date);
@@ -36,7 +37,7 @@ export class HeathActService {
     return this.httpClient.post<HealthAct>(this.#BASE_URL, healthAct);
   }
 
-  deleteHealthAct(id: number): Observable<void> {
+  deleteHealthAct(id: UUID): Observable<void> {
     return this.httpClient.delete<void>(this.#BASE_URL + '/' + id);
   }
 }

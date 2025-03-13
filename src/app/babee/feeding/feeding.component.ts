@@ -1,4 +1,4 @@
-import { JsonPipe, NgFor } from '@angular/common';
+import { NgFor } from '@angular/common';
 import {
   Component,
   computed,
@@ -15,7 +15,7 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { FeedingList } from '../../models/babee.model';
+import { FeedingList, UUID } from '../../models/babee.model';
 import { FeedingService } from '../../services/feeding.service';
 import { stringToDateUTC } from '../../utils/app.utils';
 
@@ -27,7 +27,7 @@ import { stringToDateUTC } from '../../utils/app.utils';
 })
 export class FeedingComponent {
   @Input() date!: string;
-  @Input() babeeId!: number;
+  @Input() babeeId!: UUID;
 
   mealOptions = ['A gouté', 'En partie', 'Entièrement'];
 
@@ -150,7 +150,7 @@ export class FeedingComponent {
 
       const feeding = {
         babeeId: this.babeeId,
-        date: new Date(),
+        eventDate: new Date(),
         feedingInformations: mealInformations,
       };
 
@@ -175,7 +175,7 @@ export class FeedingComponent {
     if (isFormValid) {
       const feeding = {
         babeeId: this.babeeId,
-        date: new Date(),
+        eventDate: new Date(),
         feedingInformations: ['Biberon - ' + this.quantity.value],
       };
 
@@ -185,7 +185,7 @@ export class FeedingComponent {
     }
   }
 
-  deleteFeeding(id: number) {
+  deleteFeeding(id: UUID) {
     this.feedingService.deleteFeeding(id).subscribe(() => {
       this.fetchFeedingList();
     });

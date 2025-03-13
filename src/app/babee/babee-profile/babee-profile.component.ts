@@ -3,6 +3,8 @@ import { toSignal } from '@angular/core/rxjs-interop';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { catchError, map, of } from 'rxjs';
+import { UUID } from '../../models/babee.model';
+import { AgePipe } from '../../pipes/age.pipe';
 import { BabeeService } from '../../services/babee.service';
 import { ActivitiesComponent } from '../activities/activities.component';
 import { CareActsComponent } from '../care-acts/care-acts.component';
@@ -21,6 +23,7 @@ import { SleepingComponent } from '../sleeping/sleeping.component';
     SleepingComponent,
     InfosComponent,
     ReactiveFormsModule,
+    AgePipe,
   ],
   templateUrl: './babee-profile.component.html',
   styleUrl: './babee-profile.component.css',
@@ -28,7 +31,7 @@ import { SleepingComponent } from '../sleeping/sleeping.component';
 export class BabeeProfileComponent {
   readonly #babeeService = inject(BabeeService);
   readonly #route: ActivatedRoute = inject(ActivatedRoute);
-  readonly babeeId = Number(this.#route.snapshot.paramMap.get('id'));
+  readonly babeeId: UUID = this.#route.snapshot.paramMap.get('id') as UUID;
 
   readonly selectedDate = new FormControl(
     new Date().toISOString().slice(0, 10)

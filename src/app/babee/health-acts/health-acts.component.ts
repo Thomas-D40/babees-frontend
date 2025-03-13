@@ -9,9 +9,13 @@ import {
   ValidatorFn,
   Validators,
 } from '@angular/forms';
-import { HEALTH_ACT_TYPE_LIST, HealthActList } from '../../models/babee.model';
+import {
+  HEALTH_ACT_TYPE_LIST,
+  HealthActList,
+  UUID,
+} from '../../models/babee.model';
 import { HeathActService } from '../../services/heath-act.service';
-import { stringToDateUTC } from '../../utils/app.utils';
+import { addSecondsToHour, stringToDateUTC } from '../../utils/app.utils';
 
 @Component({
   selector: 'app-health-acts',
@@ -21,7 +25,7 @@ import { stringToDateUTC } from '../../utils/app.utils';
 })
 export class HealthActsComponent {
   @Input() date!: string;
-  @Input() babeeId!: number;
+  @Input() babeeId!: UUID;
 
   readonly healthActTypeList = HEALTH_ACT_TYPE_LIST;
 
@@ -67,9 +71,9 @@ export class HealthActsComponent {
     {
       healthActType: new FormControl(1, [Validators.required]),
       temperature: new FormControl(''),
-      nomMedicament: new FormControl(''),
+      medecine: new FormControl(''),
       dosage: new FormControl(''),
-      heure: new FormControl('08:00', [Validators.required]),
+      actHour: new FormControl('08:00', [Validators.required]),
     },
     {
       validators: healthActDetailRequiredValidator(),
@@ -84,20 +88,20 @@ export class HealthActsComponent {
     return this.form.get('temperature') as FormControl;
   }
 
-  get nomMedicament(): FormControl {
-    return this.form.get('nomMedicament') as FormControl;
+  get medecine(): FormControl {
+    return this.form.get('medecine') as FormControl;
   }
   get dosage(): FormControl {
     return this.form.get('dosage') as FormControl;
   }
-  get heure(): FormControl {
-    return this.form.get('heure') as FormControl;
+  get actHour(): FormControl {
+    return this.form.get('actHour') as FormControl;
   }
 
   resetFormFields() {
     this.form.patchValue({
       temperature: '',
-      nomMedicament: '',
+      medecine: '',
       dosage: '',
     });
   }
@@ -108,11 +112,11 @@ export class HealthActsComponent {
     if (isFormValid) {
       const healthAct = {
         babeeId: this.babeeId,
-        date: new Date(),
+        eventDate: new Date(),
         healthActType: this.healthActType.value,
-        heure: this.heure.value,
+        actHour: addSecondsToHour(this.actHour.value),
         temperature: this.temperature?.value,
-        nomMedicament: this.nomMedicament?.value,
+        medecine: this.medecine?.value,
         dosage: this.dosage?.value,
       };
 
@@ -123,7 +127,7 @@ export class HealthActsComponent {
     }
   }
 
-  deleteHealthAct(id: number) {
+  deleteHealthAct(id: UUID) {
     this.healthActService.deleteHealthAct(id).subscribe(() => {
       this.fetchHealthActList();
     });
@@ -134,11 +138,11 @@ function healthActDetailRequiredValidator(): ValidatorFn {
   return (form: AbstractControl): ValidationErrors | null => {
     const healthAct = form.get('healthActType')?.value;
     const temperature = form.get('temperature');
-    const medicaments = form.get('nomMedicament');
+    const medecine = form.get('medecine');
     const dosage = form.get('dosage');
 
     temperature?.setErrors(null);
-    medicaments?.setErrors(null);
+    medecine?.setErrors(null);
     dosage?.setErrors(null);
 
     if (healthAct == 1 && !temperature?.value) {
@@ -146,7 +150,7 @@ function healthActDetailRequiredValidator(): ValidatorFn {
     }
 
     if (healthAct == 2) {
-      if (!medicaments?.value) medicaments?.setErrors({ required: true });
+      if (!medecine?.value) medecine?.setErrors({ required: true });
       if (!dosage?.value) dosage?.setErrors({ required: true });
     }
 

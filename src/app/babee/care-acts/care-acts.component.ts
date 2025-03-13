@@ -14,6 +14,7 @@ import {
   CARE_ACT_TYPE_LIST,
   CareAct,
   CareActList,
+  UUID,
 } from '../../models/babee.model';
 import { CareActService } from '../../services/care-act.service';
 import { stringToDateUTC } from '../../utils/app.utils';
@@ -26,7 +27,7 @@ import { stringToDateUTC } from '../../utils/app.utils';
 })
 export class CareActsComponent {
   @Input({ required: true }) date!: string;
-  @Input({ required: true }) babeeId!: number;
+  @Input({ required: true }) babeeId!: UUID;
 
   private readonly careActService = inject(CareActService);
 
@@ -123,11 +124,11 @@ export class CareActsComponent {
 
     if (isFormValid && babeeId) {
       const careAct: CareAct = {
-        date: date,
+        eventDate: date,
         babeeId: babeeId,
         careActType: careActType.value,
         careActDetail: careActDetail.value,
-        commentaire: commentaire.value,
+        comment: commentaire.value,
       };
 
       this.careActService.createCareAct(careAct).subscribe(() => {
@@ -141,7 +142,7 @@ export class CareActsComponent {
     }
   }
 
-  deleteCareAct(id: number) {
+  deleteCareAct(id: UUID) {
     this.careActService.deleteCareAct(id).subscribe(() => {
       this.fetchCareActList();
     });
