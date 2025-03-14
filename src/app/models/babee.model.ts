@@ -1,11 +1,11 @@
 export type UUID = `${string}-${string}-${string}-${string}-${string}`;
 
 export interface Babee {
-  id: UUID;
+  id?: UUID;
   firstName: string;
   lastName: string;
   birthDate: Date;
-  photoUrl: string;
+  photo: string;
 }
 
 export type BabeeList = Babee[];

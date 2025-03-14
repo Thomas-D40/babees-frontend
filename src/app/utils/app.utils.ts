@@ -40,3 +40,10 @@ export function stringToDateUTC(dateString: string) {
 export function addSecondsToHour(hour: string) {
   return hour + ':00';
 }
+
+export function getImageSrc(base64: string | null): string {
+  if (base64) {
+    return `data:image/jpeg;base64,${base64}`;
+  }
+  return 'images/avatar-bebe.png';
+}

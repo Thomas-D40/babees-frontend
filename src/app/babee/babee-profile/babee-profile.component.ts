@@ -6,6 +6,7 @@ import { catchError, map, of } from 'rxjs';
 import { UUID } from '../../models/babee.model';
 import { AgePipe } from '../../pipes/age.pipe';
 import { BabeeService } from '../../services/babee.service';
+import { getImageSrc } from '../../utils/app.utils';
 import { ActivitiesComponent } from '../activities/activities.component';
 import { CareActsComponent } from '../care-acts/care-acts.component';
 import { FeedingComponent } from '../feeding/feeding.component';
@@ -49,4 +50,8 @@ export class BabeeProfileComponent {
   readonly error = computed(() => !!this.#babeeResponse()?.error);
 
   readonly babee = computed(() => this.#babeeResponse()?.value);
+
+  getImageSrc(imageUrl: string) {
+    return getImageSrc(imageUrl);
+  }
 }

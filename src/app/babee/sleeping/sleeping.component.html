@@ -42,10 +42,6 @@
         Ajouter une période de sommeil
       </h5>
 
-      <datalist id="times">
-        <option *ngFor="let time of timeOptions" [value]="time"></option>
-      </datalist>
-
       <form [formGroup]="form" (ngSubmit)="onSubmit()">
         <div class="row mb-3">
           <!-- Début -->

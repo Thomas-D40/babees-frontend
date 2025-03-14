@@ -1,8 +1,8 @@
-import { Component, inject, signal } from '@angular/core';
-import { RouterLink } from '@angular/router';
-import { of } from 'rxjs';
-import { BabeeService } from '../../services/babee.service';
+import { Component, inject } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
+import { RouterLink } from '@angular/router';
+import { BabeeService } from '../../services/babee.service';
+import { getImageSrc } from '../../utils/app.utils';
 
 @Component({
   selector: 'app-babee-list',
@@ -16,4 +16,8 @@ export class BabeeListComponent {
   readonly babeeList = toSignal(this.#babeeService.getBabeeList(), {
     initialValue: [],
   });
+
+  getImageSrc(imageUrl: string) {
+    return getImageSrc(imageUrl);
+  }
 }

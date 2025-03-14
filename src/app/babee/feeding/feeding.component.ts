@@ -85,9 +85,9 @@ export class FeedingComponent {
       'Fraidou',
       'Purée pomme groseille',
     ],
-    gouter_petit: ['yaourt nature', 'compote pommes-badiane'],
-    gouter_moyen: ['yaourt nature', 'compote pommes-badiane', 'pain'],
-    gouter_grand: ['yaourt nature', 'compote pommes-badiane', 'pain'],
+    gouter_petit: ['yaourt nature', 'compote pommes badiane'],
+    gouter_moyen: ['yaourt nature', 'compote pommes badiane', 'pain'],
+    gouter_grand: ['yaourt nature', 'compote pommes badiane', 'pain'],
   };
 
   selectedKey = signal<'biberon' | 'petit' | 'moyen' | 'grand'>('petit');
